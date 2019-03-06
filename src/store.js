@@ -1233,11 +1233,17 @@ export default new Vuex.Store({
 
   },
   mutations: {
-    cambiarConvocatoriaTrabajo: (state,payload) => state.idConvocatoriaTrabajo = payload
-    
+    cambiarConvocatoriaTrabajo: (state,payload) => state.idConvocatoriaTrabajo = payload,
+    cambiarEntidades: (state,payload) => state.entidades = payload,
+    cambiarOrdenes: (state,payload) => state.ordenes = payload,
+    cambiarConvocatorias: (state,payload) => state.convocatorias = payload
     
   },
   actions: {
-    cambiarConvocatoriaTrabajoAsync: (context,payload) => context.commit('cambiarConvocatoriaTrabajo',payload)
-  }
+    cambiarConvocatoriaTrabajoAsync: (context,payload) => context.commit('cambiarConvocatoriaTrabajo',payload),
+    setEntidadesAsync: (context,payload) => context.commit('cambiarEntidades',payload),
+    setOrdenesAsync: (context,payload) => context.commit('cambiarOrdenes',payload),
+    setConvocatoriasAsync: (context,payload) => context.commit('cambiarConvocatorias',payload)
+
+}
 })

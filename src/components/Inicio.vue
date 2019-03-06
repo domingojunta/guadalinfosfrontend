@@ -2,7 +2,7 @@
   <v-container>
     <v-layout align-start justify-center row pa-3 mb-2>
       <v-flex xs12 text-xs-center>
-        <h1>Programa para la gestión de subvenciones para Centros Guadalinfos</h1>
+        <h1 headline>Programa para la gestión de subvenciones para Centros Guadalinfos</h1>
       </v-flex>
     </v-layout>
 
@@ -40,20 +40,69 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   
   data() {
     return {
-      convocatorias: this.$store.getters.getConvocatorias,
-      select: ""
-    };
+      convocatorias: null,
+      select: "",
+      entidades: null,
+      ordenes: null
+      
+    }
   },
   methods: {
     cambiarEjercicioTrabajo() {
       
       this.$store.dispatch('cambiarConvocatoriaTrabajoAsync',this.select);
+    },
+
+    cargarEntidades() {
+      let me = this;
+      axios.get('/api/entidades_listar').then(function(response){
+        me.entidades = response.data;
+        me.$store.dispatch('setEntidadesAsync',me.entidades);
+        console.log("Acabo de actualizar los datos de entidades desde BBDD...");
+      }).catch(function(error){
+        console.log("Trabajaré con las entidades harcodeadas por defecto...");
+        console.log("Error: "+error);
+        
+      })
+    },
+    cargarOrdenes() {
+      let me = this;
+      axios.get('/api/ordenes_listar').then(function(response){
+        me.ordenes = response.data;
+        me.$store.dispatch('setOrdenesAsync',me.ordenes);
+        console.log("Acabo de actualizar los datos de Ordenes desde BBDD...");
+      }).catch(function(error){
+        console.log("Trabajaré con las órdenes harcodeadas por defecto...");
+        console.log("Error: "+error);
+        
+      })
+    },
+    cargarConvocatorias() {
+      let me = this;
+      axios.get('/api/convocatorias_listar').then(function(response){
+        me.convocatorias = response.data;
+        me.$store.dispatch('setConvocatoriasAsync',me.convocatorias);
+        console.log("Acabo de actualizar los datos de convocatorias desde BBDD...");
+      }).catch(function(error){
+        console.log("Trabajaré con las convocatorias harcodeadas por defecto...");
+        console.log("Error: "+error);
+        
+      })
+    },
+    
+  },
+
+  mounted() {
+      this.cargarEntidades();
+      this.cargarOrdenes();
+      this.cargarConvocatorias();
+      
     }
-  }
 };
 </script>
 
