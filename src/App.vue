@@ -184,7 +184,7 @@
                   </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+              <v-list-tile :to="{name: 'ordenes'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
@@ -194,7 +194,7 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+              <v-list-tile :to="{name: 'convocatorias'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
@@ -214,7 +214,7 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+              <v-list-tile :to="{name: 'solicitudes'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>

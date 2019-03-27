@@ -1222,28 +1222,44 @@ export default new Vuex.Store({
         "aliasOrden": "25 de enero del 2016"
       }
     ],
-      idConvocatoriaTrabajo: 1
+      idConvocatoriaTrabajo: 1,
+      solicitudes: [],
+      solicitudesConvocatoria: [],
+      provincias: ['Almería','Cádiz','Córdoba','Granada','Huelva','Jaén','Sevilla'],
+      tipos: ['ayuntamiento','ELA'],
+      grupos: ['A','B','C'],
     
   },
   getters: {
     getConvocatorias: (state)=>state.convocatorias,
     getOrdenes: (state)=> state.ordenes,
     getEntidades: (state)=>state.entidades,
-    getIdConvocatoriaTrabajo: (state)=>state.idConvocatoriaTrabajo
+    getIdConvocatoriaTrabajo: (state)=>state.idConvocatoriaTrabajo,
+    getProvincias : (state)=>state.provincias,
+    getTipos: (state)=>state.tipos,
+    getGrupos: (state) => state.grupos,
+    getSolicitudes: (state) => state.solicitudes
+    
+
 
   },
   mutations: {
     cambiarConvocatoriaTrabajo: (state,payload) => state.idConvocatoriaTrabajo = payload,
     cambiarEntidades: (state,payload) => state.entidades = payload,
     cambiarOrdenes: (state,payload) => state.ordenes = payload,
-    cambiarConvocatorias: (state,payload) => state.convocatorias = payload
+    cambiarConvocatorias: (state,payload) => state.convocatorias = payload,
+    cambiarSolicitudes: (state,payload) => state.solicitudes = payload
     
   },
   actions: {
     cambiarConvocatoriaTrabajoAsync: (context,payload) => context.commit('cambiarConvocatoriaTrabajo',payload),
     setEntidadesAsync: (context,payload) => context.commit('cambiarEntidades',payload),
     setOrdenesAsync: (context,payload) => context.commit('cambiarOrdenes',payload),
-    setConvocatoriasAsync: (context,payload) => context.commit('cambiarConvocatorias',payload)
+    setConvocatoriasAsync: (context,payload) => context.commit('cambiarConvocatorias',payload),
+    setSolicitudesAsync: (context,payload) => context.commit('cambiarSolicitudes',payload)
 
-}
+    },
+   
+
+     
 })
