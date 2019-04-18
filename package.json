@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "jspdf": "^1.5.3",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vue2-filters": "^0.5.1",

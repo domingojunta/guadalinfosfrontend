@@ -14,6 +14,8 @@
               
             </v-list-tile>  
           </template>
+
+          <!--Concesión-->
           <template>
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
@@ -27,7 +29,9 @@
                   </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--ConcesionSolicitudes-->
+              <v-list-tile color="text-body" :to="{name: 'concesionSolicitudes'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
@@ -37,7 +41,9 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--ConcesionComunicacion-->
+              <v-list-tile color="text-body" :to="{name: 'concesionComunicacion'}">
                 <v-list-tile-action>
                   <v-icon>email</v-icon>
                 </v-list-tile-action>
@@ -47,7 +53,9 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--ConcesionRequerimiento-->
+              <v-list-tile color="text-body" :to="{name: 'concesionRequerimiento'}">
                 <v-list-tile-action>
                   <v-icon>mail</v-icon>
                 </v-list-tile-action>
@@ -57,7 +65,9 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--PropuestaConcesion-->
+              <v-list-tile  color="text-body" :to="{name: 'concesionPropuesta'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
@@ -67,7 +77,9 @@
                  </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--ConcesionResolución-->
+              <v-list-tile color="text-body" :to="{name: 'concesionResolucion'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
@@ -77,9 +89,14 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
+
             </v-list-group>
           </template>
+
+          <!--Pagos-->
           <template>
+
+            
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
                 <v-list-tile-action>
@@ -115,6 +132,8 @@
               
             </v-list-group>
           </template>
+
+          <!--Reintegros-->
           <template>
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
@@ -171,6 +190,8 @@
               
             </v-list-group>
           </template>
+
+          <!--Tablas-->
           <template>
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
@@ -227,6 +248,8 @@
               
             </v-list-group>
           </template>
+
+          <!--Accesos-->
           <template>
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
@@ -264,6 +287,8 @@
               
             </v-list-group>
           </template>
+
+          <!--Créditos-->
           <template>
             <v-list-tile color="primary" :to="{name: 'about'}">
               <v-list-tile-action>
@@ -275,8 +300,11 @@
               
             </v-list-tile>  
           </template>
+
         </v-list>
       </v-navigation-drawer>
+
+
       <v-toolbar color="primary" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
         <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
           <v-avatar size="55px" tile>

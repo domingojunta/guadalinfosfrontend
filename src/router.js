@@ -5,6 +5,11 @@ import Entidades from './components/Entidad.vue'
 import Ordenes from './components/Orden.vue'
 import Convocatorias from './components/Convocatoria.vue'
 import Solicitudes from './components/Solicitud.vue'
+import ConcesionSolicitudes from './components/ConcesionSolicitudes.vue'
+import ConcesionComunicacion from './components/ConcesionComunicacion.vue'
+import ConcesionRequerimiento from './components/ConcesionRequerimiento.vue'
+import ConcesionPropuesta from './components/ConcesionPropuesta.vue'
+import ConcesionResolucion from './components/ConcesionResolucion.vue'
 import About from './views/About.vue'
 
 Vue.use(Router)
@@ -45,6 +50,31 @@ export default new Router({
       path: '/solicitudes',
       name: 'solicitudes',
       component: Solicitudes
+    },
+    {
+      path: '/concesionSolicitudes',
+      name: 'concesionSolicitudes',
+      component: ConcesionSolicitudes
+    },
+    {
+      path: '/concesionComunicacion',
+      name: 'concesionComunicacion',
+      component: ConcesionComunicacion
+    },
+    {
+      path: '/concesionRequerimiento',
+      name: 'concesionRequerimiento',
+      component: ConcesionRequerimiento
+    },
+    {
+      path: '/concesionPropuesta',
+      name: 'concesionPropuesta',
+      component: ConcesionPropuesta
+    },
+    {
+      path: '/concesionResolucion',
+      name: 'concesionResolucion',
+      component: ConcesionResolucion
     }
   ]
 })
