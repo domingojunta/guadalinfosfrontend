@@ -5,7 +5,7 @@
         
           
             <v-icon color="blue">account_balance</v-icon>
-            <v-toolbar-title class="primary--text">Solicitudes</v-toolbar-title>
+            <v-toolbar-title class="primary--text">Cobro Reintegro</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-flex xs1>
               <v-select 
@@ -16,6 +16,7 @@
             label="Convocatoria"
             single-line
             v-on:change="cambiarEjercicioTrabajo"
+
             
           ></v-select>
 
@@ -316,7 +317,7 @@
                   </v-flex>
                   <v-flex xs6>
                     <v-text-field type="date" v-model="fechaAbonoReintegro" label="Fecha abono reintegro"
-                    :value="fechaAbonoReintegro"></v-text-field>
+                    :value="fechaAbonoReintegro" autofocus></v-text-field>
                   </v-flex>
                   
 
@@ -340,580 +341,7 @@
             </v-card>
           </v-dialog>
    
-        <!-- Ventana Emergente Crear-->
-
-        <v-dialog v-model="dialogCrear" max-width="80%">
-          <template v-slot:activator="{ on }">
-            <v-btn dark class="mb-2 blue" v-on="on" icon >
-                <v-icon>add</v-icon>
-                     
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline blue--text">Alta Nueva Solicitud</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs4>
-                    <v-select
-                      v-model="convocatoria"
-                      :items="convocatorias"
-                      item-text="yearConvocatoria"
-                      item-value="idConvocatoria"
-                      label="Convocatoria"
-                      
-                      single-line
-                      return-object
-                      v-on:change="cambiarConvocatoriaTrabajo"
-                    ></v-select>
-                  </v-flex>
-                  <v-flex xs8>
-                    <v-select
-                      v-model="entidad"
-                      :items="entidades"
-                      item-text="nombreEntidad"
-                      item-value="idEntidad"
-                      label="Nombre Entidad"
-                      single-line
-                      return-object
-                      v-on:change="cambiarEntidadTrabajo"
-                    ></v-select>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaEntrada" label="Fecha Entrada"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="text" v-model="expediente" label="Expediente"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="text" v-model="subcc" label="subcc"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field 
-                      type="number"
-                      v-model="costePersonal" 
-                      label="Coste de Personal"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field 
-                      type="number"
-                      v-model="costeDietas" 
-                      label="Coste de Dietas"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field 
-                      type="number"
-                      v-model="subvencionPersonal" 
-                      label="Subvención Personal"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field 
-                      type="number"
-                      v-model="subvencionDietas" 
-                      label="Subvención Dietas"
-                    > </v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaAeat" label="Fecha AEAT"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaAtrian" label="Fecha ATRIAN"
-                    :value="fechaAtrian"></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaSeguridadSocial" label="Fecha S.Social"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaRequerimientoSolicitud" label="Fecha Requerimiento Solicitud"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaPropuestaConcesion" label="Fecha Propuesta Concesión"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="expedienteContableD" label="Expediente Contable D"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="numeroDocumentoD" label="Número documento D"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaResolucionConcesion" label="Fecha Resolución Concesión"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaNotificacionResolucionConcesion" label="Fecha Notif. Res. Concesión"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaPropuestaOJ" label="Fecha propuesta OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="text" v-model="expedienteContableOJ" label="Expediente OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="text" v-model="numeroDocumentoOJ" label="Número doc. OJ"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="importeOJ" label="Importe OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaPagoMaterialOJ" label="Fecha pago OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="text" v-model="numeroDocumentoOM" label="Número doc. OM"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                  </v-flex>
-                  
-                  <v-flex xs8></v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="objetivoNumeroActividades" label="Objetivo Num. Actividades"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="objetivoNumeroActividadesMarcadas" label="Objetivo Num. Activ. Marcadas"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="objetivoNumeroMeses" label="Objetivo número meses"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="numeroActividadesAlcanzado" label="Número Actividades Alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="numeroActividadesMarcadasAlcanzado" label="Num. Activ. Marcadas Alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="number" v-model="numeroMesesAlcanzado" label="Número meses alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="number" v-model="gradoCumplimientoTecnico" label="Grado cumplimiento técnico"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6></v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field type="number" v-model="importeJustificadoPersonal" label="Importe Justif. Personal"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="number" v-model="importeJustificadoDietas" label="Importe Jusif. Dietas"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="number" v-model="numeroDiasCerrado" label="Número de días de cierre"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaPropuestaLiquidacion" label="Fecha propuesta liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaAlegacionesPropuestaLiquidacion" label="Fecha alegaciones liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaLiquidacion" label="Fecha Liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaNotificacionLiquidacion" label="Fecha notificación liquidación"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="expedienteContableJ" label="Expediente Contable J"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="numeroDocumentoJ" label="Número documento J"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field type="text" v-model="expedienteContablePropuestaO" label="Expediente contable O"
-                    ></v-text-field>
-                  </v-flex>
-                  
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="numeroDocumentoO" label="Número documento O"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field type="date" v-model="fechaPagoMaterialO" label="Fecha pago O"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaAcuerdoInicioReintegro" label="Fecha AIR"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaAlegacionesAIR" label="Fecha alegaciones AIR"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field type="date" v-model="fechaResolucionReintegro" label="Fecha resolución Reintegro"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="text" v-model="numeroModelo022" label="Número Modelo 022"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="number" v-model="importeModelo022" label="Importe Modelo 022"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaNotificacionResolucionReintegro" label="Fecha notificación reintegro"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field type="date" v-model="fechaAbonoReintegro" label="Fecha abono reintegro"
-                    ></v-text-field>
-                  </v-flex>
-                  
-
-                  <v-flex xs12 v-if="valida">
-                    <div class="red--text" v-for="item in validaMensaje">{{item}}</div>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="close">
-                <v-icon large>cancel</v-icon>
-              </v-btn>
-              <v-btn color="blue darken-1" flat @click="crear">
-                <v-icon large>save</v-icon>
-              </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
         
-        
-        
-        
-        
-        
-        <!-- Ventana Emergente Borrar-->
-
-        <v-dialog v-model="dialogBorrar" max-width="80%">
-          
-          <v-card>
-            <v-card-title>
-              
-              <span class="headline red--text">¿Seguro que quiere borrar el siguiente registro?</span>
-            </v-card-title>
-             
-
-            <v-card-text>
-              <v-container grid-list-md>
-                
-
-                <v-layout wrap>
-
-                  <v-flex xs12>
-                    <v-text-field disabled v-model="idSolicitud" label="Id"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled v-model="yearConvocatoria" label="Convocatoria"></v-text-field>
-                  </v-flex>
-                  <v-flex xs8>
-                    <v-text-field disabled v-model="nombreEntidad" label="Entidad"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaEntrada" label="Fecha Entrada">
-                    </v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="text" v-model="expediente" label="Expediente"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="text" v-model="subcc" label="subcc"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field disabled
-                      type="number"
-                      v-model="costePersonal" 
-                      label="Coste de Personal"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled
-                      type="number"
-                      v-model="costeDietas" 
-                      label="Coste de Dietas"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled
-                      type="number"
-                      v-model="subvencionPersonal" 
-                      label="Subvención Personal"
-                    > </v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled
-                      type="number"
-                      v-model="subvencionDietas" 
-                      label="Subvención Dietas"
-                    > </v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaAeat" label="Fecha AEAT"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaAtrian" label="Fecha ATRIAN"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaSeguridadSocial" label="Fecha S.Social"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaRequerimientoSolicitud" label="Fecha Requerimiento Solicitud"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaPropuestaConcesion" label="Fecha Propuesta Concesión"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="expedienteContableD" label="Expediente Contable D"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="numeroDocumentoD" label="Número documento D"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaResolucionConcesion" label="Fecha Resolución Concesión"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaNotificacionResolucionConcesion" label="Fecha Notif. Res. Concesión"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaPropuestaOJ" label="Fecha propuesta OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="text" v-model="expedienteContableOJ" label="Expediente OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="text" v-model="numeroDocumentoOJ" label="Número doc. OJ"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="importeOJ" label="Importe OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaPagoMaterialOJ" label="Fecha pago OJ"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="text" v-model="numeroDocumentoOM" label="Número doc. OM"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    
-                  </v-flex>
-                  <v-flex xs8></v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="objetivoNumeroActividades" label="Objetivo Num. Actividades"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="objetivoNumeroActividadesMarcadas" label="Objetivo Num. Activ. Marcadas"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="objetivoNumeroMeses" label="Objetivo número meses"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="numeroActividadesAlcanzado" label="Número Actividades Alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="numeroActividadesMarcadasAlcanzado" label="Num. Activ. Marcadas Alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="number" v-model="numeroMesesAlcanzado" label="Número meses alcanzado"
-                    ></v-text-field>
-                  </v-flex>
-
-                    <v-flex xs6>
-                    <v-text-field disabled type="number" v-model="gradoCumplimientoTecnico" label="Grado cumplimiento técnico"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6></v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field disabled type="number" v-model="importeJustificadoPersonal" label="Importe Justif. Personal"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="number" v-model="importeJustificadoDietas" label="Importe Jusif. Dietas"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="number" v-model="numeroDiasCerrado" label="Número de días de cierre"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaPropuestaLiquidacion" label="Fecha propuesta liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaAlegacionesPropuestaLiquidacion" label="Fecha alegaciones liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaLiquidacion" label="Fecha Liquidación"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaNotificacionLiquidacion" label="Fecha notificación liquidación"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="expedienteContableJ" label="Expediente Contable J"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="numeroDocumentoJ" label="Número documento J"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs3>
-                    <v-text-field disabled type="text" v-model="expedienteContablePropuestaO" label="Expediente contable O"
-                    ></v-text-field>
-                  </v-flex>
-                  
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="numeroDocumentoO" label="Número documento O"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs3>
-                    <v-text-field disabled type="date" v-model="fechaPagoMaterialO" label="Fecha pago O"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaAcuerdoInicioReintegro" label="Fecha AIR"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaAlegacionesAIR" label="Fecha alegaciones AIR"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-text-field disabled type="date" v-model="fechaResolucionReintegro" label="Fecha resolución Reintegro"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="text" v-model="numeroModelo022" label="Número Modelo 022"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="number" v-model="importeModelo022" label="Importe Modelo 022"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaNotificacionResolucionReintegro" label="Fecha notificación reintegro"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-text-field disabled type="date" v-model="fechaAbonoReintegro" label="Fecha abono reintegro"
-                    ></v-text-field>
-                  </v-flex>
-                  
-                  
-                </v-layout>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="close">
-                <v-icon large>cancel</v-icon>
-              </v-btn>
-              <v-btn color="red darken-1" flat @click="borrar(idSolicitud)">
-                <v-icon large>delete</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
 
         
       </v-toolbar>
@@ -934,16 +362,17 @@
           :search="palabraBusqueda"
           :rows-per-page-items="rowsPerPageItems"
           :pagination.sync="pagination"
+          
           >
+          
 
         <template v-slot:items="props">
           
             <td class="justify-center layout px-0">
               <v-icon small class="mr-2 blue--text" @click="editItem(props.item)">edit</v-icon>
-              <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
             </td>
-            <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
-            <td class="text-xs-center align-start">{{ props.item.idSolicitud }}</td>
+            <td class="text-xs-left align-start">{{ props.item.nombreEntidad }}</td>
+            <td class="text-xs-center">{{ props.item.idSolicitud }}</td>
             
             <td class="text-xs-left" >{{ props.item.fechaEntrada }}</td>
             <td class="text-xs-left" >{{ props.item.expediente }}</td>
@@ -988,6 +417,7 @@ export default {
             entidades:[],
             
             idConvocatoriaTrabajo: 1,
+            
             rowsPerPageItems: [5,10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}],
             pagination: {
               rowsPerPage: 10
@@ -995,7 +425,7 @@ export default {
 
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'Entidad', align: 'center', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
+              { text: 'Entidad', align: 'left', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
               { text: 'id', align: 'center', sortable: true, value: 'idSolicitud', class: 'primary--text' },
               
               { text: 'Fecha', align: 'left', sortable: true, value: 'fechaEntrada', class: 'primary--text' },
@@ -1061,10 +491,9 @@ export default {
 
             fechaAcuerdoInicioReintegro:'',
             fechaAlegacionesAIR:'',
+            fechaResolucionReintegro:'',
             numeroModelo022:'',
             importeModelo022:'',
-            
-            fechaResolucionReintegro:'',
             fechaNotificacionResolucionReintegro:'',
             fechaAbonoReintegro:''
             
@@ -1400,9 +829,9 @@ export default {
 
               'fechaAcuerdoInicioReintegro':me.fechaAcuerdoInicioReintegro,
               'fechaAlegacionesAIR':me.fechaAlegacionesAIR,
+              'fechaResolucionReintegro':me.fechaResolucionReintegro,
               'numeroModelo022':me.numeroModelo022,
               'importeModelo022':me.importeModelo022,
-              'fechaResolucionReintegro':me.fechaResolucionReintegro,
               'fechaNotificacionResolucionReintegro':me.fechaNotificacionResolucionReintegro,
               'fechaAbonoReintegro':me.fechaAbonoReintegro
                   

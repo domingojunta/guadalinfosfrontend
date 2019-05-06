@@ -157,8 +157,9 @@
               <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
             </td>
             <td class="text-xs-center align-start">{{ props.item.idOrden }}</td>
-            <td class="text-xs-justify">{{ props.item.nombreOrden }}</td>
             <td class="text-xs-left" >{{ props.item.aliasOrden }}</td>
+            <td class="text-xs-justify">{{ props.item.nombreOrden }}</td>
+            
           
         </template>
         <template v-slot:no-data>
@@ -189,8 +190,9 @@ export default {
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
               { text: 'id', align: 'center', sortable: true, value: 'idOrden', class: 'primary--text' },
-              { text: 'Nombre', align: 'center', sortable: true, value: 'nombreOrden', class: 'primary--text' },
               { text: 'alias', align: 'center', sortable: true, value: 'aliasOrden', class: 'primary--text' },
+              { text: 'Nombre', align: 'center', sortable: true, value: 'nombreOrden', class: 'primary--text' },
+              
               ],
             palabraBusqueda:'',
             editedIndex: -1,

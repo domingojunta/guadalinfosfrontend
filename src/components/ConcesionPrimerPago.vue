@@ -5,7 +5,7 @@
         
           
             <v-icon color="blue">account_balance</v-icon>
-            <v-toolbar-title class="primary--text">Resolucion Concesión</v-toolbar-title>
+            <v-toolbar-title class="primary--text">Primer Pago</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-flex xs1>
               <v-select 
@@ -30,7 +30,7 @@
          
           <v-card>
             <v-card-title>
-              <span class="headline blue--text">Imprimir Resolución Concesión</span>
+              <span class="headline blue--text">Registrar Primer Pago</span>
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
@@ -105,7 +105,7 @@
                   </v-flex>
 
                   <v-flex xs3>
-                    <v-text-field autofocus type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada" :value="fechaComunicacionEntrada"></v-text-field>
+                    <v-text-field type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada" :value="fechaComunicacionEntrada"></v-text-field>
                   </v-flex>
 
                   <v-flex xs3>
@@ -146,7 +146,31 @@
                     <v-text-field type="date" v-model="fechaNotificacionResolucionConcesion" label="Fecha Notif. Res. Concesión"
                     :value="fechaNotificacionResolucionConcesion"></v-text-field>
                   </v-flex>
-                  
+                  <v-flex xs4>
+                    <v-text-field  autofocus type="date" v-model="fechaPropuestaOJ" label="Fecha propuesta OJ"
+                    :value="fechaPropuestaOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="expedienteContableOJ" label="Expediente OJ"
+                    :value="expedienteContableOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="numeroDocumentoOJ" label="Número doc. OJ"
+                    :value="numeroDocumentoOJ"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="importeOJ" label="Importe OJ"
+                    :value="importeOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="date" v-model="fechaPagoMaterialOJ" label="Fecha pago OJ"
+                    :value="fechaPagoMaterialOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="numeroDocumentoOM" label="Número doc. OM"
+                    :value="numeroDocumentoOM"></v-text-field>
+                  </v-flex>
                   
 
                   <v-flex xs12 v-if="valida">
@@ -197,8 +221,7 @@
           
             <td class="justify-center layout px-0">
               <v-icon class="rm-5 blue--text" @click="pdfItem(props.item)">edit</v-icon>
-              <v-icon class="rm-5 green--text" @click="imprimirPDF(props.item)">picture_as_pdf</v-icon>
-              <v-icon class="blue--text" @click="imprimirNotificacionPDF(props.item)">contact_mail</v-icon>
+              
 
               
             </td>
@@ -286,8 +309,14 @@ export default {
             expedienteContableD:'',
             numeroDocumentoD:'',
             fechaResolucionConcesion:'',
-            fechaNotificacionResolucionConcesion:''
+            fechaNotificacionResolucionConcesion:'',
             
+            fechaPropuestaOJ:'',
+            expedienteContableOJ:'',
+            numeroDocumentoOJ:'',
+            importeOJ:'',
+            fechaPagoMaterialOJ:'',
+            numeroDocumentoOM:'',
             
             
         }
@@ -322,72 +351,7 @@ export default {
     methods: {
 
         
-        pedirPDFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
-          
-          let me = this;
-          this.cargando=1;
-          //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
-          //console.log("Voy a hacer una petición get a:"+direccion);
-          
-          axios('/reporte/resolucionConcesion/'+idSolicitud, {
-            method: 'GET',
-            responseType: 'blob'
-          }).then(function(response){
-            const file = new Blob(
-              [response.data],
-              {type: 'application/x-download'}
-            );
-            
-            const fileURL = URL.createObjectURL(file);
-            const link = document.createElement('a');
-            link.href = fileURL;
-            let nombreFichero = 'Resolución_Concesión_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.pdf';
-            link.setAttribute('download',nombreFichero);
-            document.body.appendChild(link);
-            link.click();
-            //window.open(fileURL);
-            
-          }).catch(function(error){
-            
-            console.log("Error: "+error);
-          });
-
-          setTimeout(this.cambioCarga,1000);
-        },
-        
-        pedirNotificacionPDFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
-          
-          let me = this;
-          this.cargando=1;
-          //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
-          //console.log("Voy a hacer una petición get a:"+direccion);
-          
-          axios('/reporte/resolucionConcesionNotificacion/'+idSolicitud, {
-            method: 'GET',
-            responseType: 'blob'
-          }).then(function(response){
-            const file = new Blob(
-              [response.data],
-              {type: 'application/x-download'}
-            );
-            
-            const fileURL = URL.createObjectURL(file);
-            const link = document.createElement('a');
-            link.href = fileURL;
-            let nombreFichero = 'Notificacion_Resolución_Concesión_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.pdf';
-            link.setAttribute('download',nombreFichero);
-            document.body.appendChild(link);
-            link.click();
-            //window.open(fileURL);
-            
-          }).catch(function(error){
-            
-            console.log("Error: "+error);
-          });
-
-          setTimeout(this.cambioCarga,1000);
-        },
-
+              
         cambioCarga() {
           this.cargando=0;
         },
@@ -418,6 +382,12 @@ export default {
             this.fechaResolucionConcesion=item.fechaResolucionConcesion;
             this.fechaNotificacionResolucionConcesion=item.fechaNotificacionResolucionConcesion;
             
+            this.fechaPropuestaOJ=item.fechaPropuestaOJ;
+            this.expedienteContableOJ=item.expedienteContableOJ;
+            this.numeroDocumentoOJ=item.numeroDocumentoOJ;
+            this.importeOJ=item.importeOJ;
+            this.fechaPagoMaterialOJ=item.fechaPagoMaterialOJ;
+            this.numeroDocumentoOM=item.numeroDocumentoOM;
             
         },
                 
@@ -444,6 +414,11 @@ export default {
           this.nombreEntidad=item.nombreEntidad;
         },
 
+        pdfItem(item) {
+            this.dialogModificar = true;
+            this.asiginarValores(item);
+        },
+
         listar() {
           let me = this;
           this.cargando=1;
@@ -464,45 +439,13 @@ export default {
 
           setTimeout(this.cambioCarga,1000);
         },
-
-
-        pdfItem(item) {
-            this.dialogModificar = true;
-            this.asiginarValores(item);
-        },
-
-        imprimirPDF(item) {
-            
-            if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
-              alert("Antes de imprimir debes de rellenar los campos");
-            } else {
-             
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
-            }
-        },
-
-        imprimirNotificacionPDF(item) {
-            if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
-              alert("Antes de imprimir debes de rellenar los campos");
-            } else {
-              
-            }
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirNotificacionPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
-        },
+   
 
         validar() {
           this.valida=0;
           this.validaMensaje=[];
           
-         
+          
           return this.valida;
           
         },
@@ -540,6 +483,13 @@ export default {
             this.numeroDocumentoD='';
             this.fechaResolucionConcesion='';
             this.fechaNotificacionResolucionConcesion='';
+
+            this.fechaPropuestaOJ='';
+            this.expedienteContableOJ='';
+            this.numeroDocumentoOJ='';
+            this.importeOJ='';
+            this.fechaPagoMaterialOJ='';
+            this.numeroDocumentoOM='';
             
         },
 
@@ -554,10 +504,9 @@ export default {
             
             let me = this;
             this.cargando=1;
-            console.log("El subcc en el cliente es: "+me.subcc);   
-            axios.put('/api/solicitud',{
-
-              'idSolicitud':me.idSolicitud,
+               
+            axios.put('/api/solicitud',
+            {'idSolicitud':me.idSolicitud,
               'idConvocatoria':me.idConvocatoria,
               'nombreConvocatoria':me.nombreConvocatoria,
               'yearConvocatoria':me.yearConvocatoria,
@@ -580,22 +529,19 @@ export default {
               'expedienteContableD': me.expedienteContableD,
               'numeroDocumentoD': me.numeroDocumentoD,
               'fechaResolucionConcesion': me.fechaResolucionConcesion,
-              'fechaNotificacionResolucionConcesion': me.fechaNotificacionResolucionConcesion
-              
-                  
-            }).then(function(response){
-              
-             
-              me.close();
+              'fechaNotificacionResolucionConcesion': me.fechaNotificacionResolucionConcesion,
+              'fechaPropuestaOJ':me.fechaPropuestaOJ,
+              'expedienteContableOJ':me.expedienteContableOJ,
+              'numeroDocumentoOJ':me.numeroDocumentoOJ,
+              'importeOJ':me.importeOJ,
+              'fechaPagoMaterialOJ':me.fechaPagoMaterialOJ,
+              'numeroDocumentoOM':me.numeroDocumentoOM,}
+            ).then(function(response){me.close();
+              me.listar();}
+            ).catch(function(error){me.close();
               me.listar();
-                  
-            }).catch(function(error){
-              
-              me.close();
-              me.listar();
-              
-              console.log(error);
-            });
+              console.log(error);}
+            );
             
               setTimeout(this.cambioCarga,1000);
               

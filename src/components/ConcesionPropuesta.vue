@@ -180,7 +180,10 @@
           :headers="headers" 
           :items="solicitudesConvocatoria" 
           class="elevation-1" 
-          :search="palabraBusqueda">
+          :search="palabraBusqueda"
+          :rows-per-page-items="rowsPerPageItems"
+          :pagination.sync="pagination"
+          >
 
         <template v-slot:items="props">
           
@@ -190,8 +193,9 @@
 
               
             </td>
+            <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
             <td class="text-xs-center align-start">{{ props.item.idSolicitud }}</td>
-            <td class="text-xs-center">{{ props.item.nombreEntidad }}</td>
+            
             <td class="text-xs-left" >{{ props.item.fechaEntrada }}</td>
             <td class="text-xs-left" >{{ props.item.expediente }}</td>
             <td class="text-xs-left" >{{ props.item.subcc }}</td>
@@ -233,12 +237,16 @@ export default {
             entidades:[],
             
             idConvocatoriaTrabajo: 1,
-            
+            rowsPerPageItems: [5,10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}],
+            pagination: {
+              rowsPerPage: 10
+            },
 
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'id', align: 'center', sortable: true, value: 'idSolicitud', class: 'primary--text' },
               { text: 'Entidad', align: 'center', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
+              { text: 'id', align: 'center', sortable: true, value: 'idSolicitud', class: 'primary--text' },
+              
               { text: 'Fecha', align: 'left', sortable: true, value: 'fechaEntrada', class: 'primary--text' },
               { text: 'Expediente', align: 'left', sortable: true, value: 'expediente', class: 'primary--text' },
               { text: 'subcc', align: 'left', sortable: true, value: 'subcc', class: 'primary--text' },
@@ -419,21 +427,23 @@ export default {
 
         imprimirPDF(item) {
             
+            if (this.fechaEntrada==null || this.fechaEntrada=='') {
+              alert("Antes de imprimir debes de rellenar los campos");
+            } else {
+            
             this.asiginarValores(item);
             //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
             this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
             //this.crearPDF();
             this.limpiar();
+            }
         },
 
         validar() {
           this.valida=0;
           this.validaMensaje=[];
           
-          if (this.fechaComunicacionEntrada == null) {
-            this.validaMensaje.push("La fecha de comunicación no puede ser nula");
-            this.valida=1;
-          } 
+          
           return this.valida;
           
         },

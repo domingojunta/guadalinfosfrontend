@@ -5,7 +5,7 @@
         
           
             <v-icon color="blue">account_balance</v-icon>
-            <v-toolbar-title class="primary--text">Resolucion Concesión</v-toolbar-title>
+            <v-toolbar-title class="primary--text">Requerimiento</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-flex xs1>
               <v-select 
@@ -25,12 +25,12 @@
             </v-text-field>
             <v-spacer></v-spacer>
 
-        <!-- Ventana Emergente Modificar-->
+        <!-- Ventana Emergente PDF-->
         <v-dialog v-model="dialogModificar" max-width="80%">
          
           <v-card>
             <v-card-title>
-              <span class="headline blue--text">Imprimir Resolución Concesión</span>
+              <span class="headline blue--text">Imprimir Requerimiento</span>
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
@@ -105,9 +105,9 @@
                   </v-flex>
 
                   <v-flex xs3>
-                    <v-text-field autofocus type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada" :value="fechaComunicacionEntrada"></v-text-field>
+                    <v-text-field type="date" v-model="fechaComunicacionEntrada" label="Comunicación Entrada"
+                    :value="fechaComunicacionEntrada"></v-text-field>
                   </v-flex>
-
                   <v-flex xs3>
                     <v-text-field type="date" v-model="fechaAeat" label="Fecha AEAT"
                     :value="fechaAeat"></v-text-field>
@@ -138,6 +138,7 @@
                     <v-text-field type="text" v-model="numeroDocumentoD" label="Número documento D"
                     :value="numeroDocumentoD"></v-text-field>
                   </v-flex>
+
                   <v-flex xs6>
                     <v-text-field type="date" v-model="fechaResolucionConcesion" label="Fecha Resolución Concesión"
                     :value="fechaResolucionConcesion"></v-text-field>
@@ -145,6 +146,85 @@
                   <v-flex xs6>
                     <v-text-field type="date" v-model="fechaNotificacionResolucionConcesion" label="Fecha Notif. Res. Concesión"
                     :value="fechaNotificacionResolucionConcesion"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="date" v-model="fechaPropuestaOJ" label="Fecha propuesta OJ"
+                    :value="fechaPropuestaOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="expedienteContableOJ" label="Expediente OJ"
+                    :value="expedienteContableOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="numeroDocumentoOJ" label="Número doc. OJ"
+                    :value="numeroDocumentoOJ"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="importeOJ" label="Importe OJ"
+                    :value="importeOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="date" v-model="fechaPagoMaterialOJ" label="Fecha pago OJ"
+                    :value="fechaPagoMaterialOJ"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="text" v-model="numeroDocumentoOM" label="Número doc. OM"
+                    :value="numeroDocumentoOM"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="numeroDiasFuncionamiento" label="Número días funcionamiento"
+                    :value="numeroDiasFuncionamiento"></v-text-field>
+                  </v-flex>
+                  <v-flex xs8></v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="objetivoNumeroActividades" label="Objetivo Num. Actividades"
+                    :value="objetivoNumeroActividades"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="objetivoNumeroActividadesMarcadas" label="Objetivo Num. Activ. Marcadas"
+                    :value="objetivoNumeroActividadesMarcadas"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="objetivoNumeroMeses" label="Objetivo número meses"
+                    :value="objetivoNumeroMeses"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="numeroActividadesAlcanzado" label="Número Actividades Alcanzado"
+                    :value="objetivoNumeroActividades"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="numeroActividadesMarcadasAlcanzado" label="Num. Activ. Marcadas Alcanzado"
+                    :value="numeroActividadesMarcadasAlcanzado"></v-text-field>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-text-field type="number" v-model="numeroMesesAlcanzado" label="Número meses alcanzado"
+                    :value="numeroMesesAlcanzado"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs3>
+                    <v-text-field type="number" v-model="importeJustificadoPersonal" label="Importe Justif. Personal"
+                    :value="importeJustificadoPersonal"></v-text-field>
+                  </v-flex>
+                  <v-flex xs3>
+                    <v-text-field type="number" v-model="importeJustificadoDietas" label="Importe Jusif. Dietas"
+                    :value="importeJustificadoDietas"></v-text-field>
+                  </v-flex>
+                  <v-flex xs6>
+                    
+                  </v-flex>
+
+                  <v-flex xs12>
+                  <v-textarea
+                    box
+                    v-model="documentacionRequerida"
+                    label="Documentación a Requerir"
+                    value=""
+                  ></v-textarea>
                   </v-flex>
                   
                   
@@ -162,8 +242,14 @@
               <v-btn color="red darken-1" flat @click="close">
                 <v-icon large>cancel</v-icon>
               </v-btn>
-              <v-btn color="blue darken-1" flat @click="modificar">
+              <v-btn color="blue darken-1" flat @click="guardar">
                 <v-icon large>save</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="imprimirPDF">
+                <v-icon large>picture_as_pdf</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="imprimirRTF">
+                <v-icon large>chrome_reader_mode</v-icon>
               </v-btn>
               </v-card-actions>
             </v-card>
@@ -196,9 +282,8 @@
         <template v-slot:items="props">
           
             <td class="justify-center layout px-0">
-              <v-icon class="rm-5 blue--text" @click="pdfItem(props.item)">edit</v-icon>
-              <v-icon class="rm-5 green--text" @click="imprimirPDF(props.item)">picture_as_pdf</v-icon>
-              <v-icon class="blue--text" @click="imprimirNotificacionPDF(props.item)">contact_mail</v-icon>
+              <v-icon class="rm-2 blue--text" @click="pdfItem(props.item)">edit</v-icon>
+              
 
               
             </td>
@@ -225,6 +310,12 @@
 
 import axios from 'axios'
 import Vue from 'vue'
+import Vue2Filters from 'vue2-filters'
+
+
+Vue.use(Vue2Filters)
+
+
 
 export default {
 
@@ -286,7 +377,23 @@ export default {
             expedienteContableD:'',
             numeroDocumentoD:'',
             fechaResolucionConcesion:'',
-            fechaNotificacionResolucionConcesion:''
+            fechaNotificacionResolucionConcesion:'',
+
+            fechaPropuestaOJ:'',
+            expedienteContableOJ:'',
+            numeroDocumentoOJ:'',
+            importeOJ:'',
+            fechaPagoMaterialOJ:'',
+            numeroDocumentoOM:'',
+            numeroDiasFuncionamiento:'',
+            objetivoNumeroActividades:'',
+            objetivoNumeroActividadesMarcadas:'',
+            objetivoNumeroMeses:'',
+            numeroActividadesAlcanzado:'',
+            numeroActividadesMarcadasAlcanzado:'',
+            numeroMesesAlcanzado:'',
+            importeJustificadoPersonal:'',
+            importeJustificadoDietas:''
             
             
             
@@ -329,9 +436,13 @@ export default {
           //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
           //console.log("Voy a hacer una petición get a:"+direccion);
           
-          axios('/reporte/resolucionConcesion/'+idSolicitud, {
-            method: 'GET',
-            responseType: 'blob'
+          axios('/reporte/requerimientoLiquidacion/', {
+            method: 'PUT',
+            responseType: 'blob',
+            data: {
+              'idSolicitud':me.idSolicitud,
+              'documentacionRequerida':me.documentacionRequerida
+            }
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -341,7 +452,7 @@ export default {
             const fileURL = URL.createObjectURL(file);
             const link = document.createElement('a');
             link.href = fileURL;
-            let nombreFichero = 'Resolución_Concesión_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.pdf';
+            let nombreFichero = 'Requerimiento_Liquidacion_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.pdf';
             link.setAttribute('download',nombreFichero);
             document.body.appendChild(link);
             link.click();
@@ -355,16 +466,17 @@ export default {
           setTimeout(this.cambioCarga,1000);
         },
         
-        pedirNotificacionPDFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
+        pedirRTFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
           
           let me = this;
           this.cargando=1;
           //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
           //console.log("Voy a hacer una petición get a:"+direccion);
           
-          axios('/reporte/resolucionConcesionNotificacion/'+idSolicitud, {
+          axios('/reporte/requerimientoLiquidacion/'+idSolicitud, {
             method: 'GET',
-            responseType: 'blob'
+            responseType: 'blob',
+            
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -374,7 +486,7 @@ export default {
             const fileURL = URL.createObjectURL(file);
             const link = document.createElement('a');
             link.href = fileURL;
-            let nombreFichero = 'Notificacion_Resolución_Concesión_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.pdf';
+            let nombreFichero = 'Requerimiento_Liquidacion_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.rtf';
             link.setAttribute('download',nombreFichero);
             document.body.appendChild(link);
             link.click();
@@ -411,12 +523,28 @@ export default {
             this.fechaAtrian=item.fechaAtrian;
             this.fechaSeguridadSocial=item.fechaSeguridadSocial;
             this.fechaRequerimientoSolicitud=item.fechaRequerimientoSolicitud;
-            this.documentacionRequerida=item.documentacionRequerida;
             this.fechaPropuestaConcesion=item.fechaPropuestaConcesion;
             this.expedienteContableD=item.expedienteContableD;
             this.numeroDocumentoD=item.numeroDocumentoD;
             this.fechaResolucionConcesion=item.fechaResolucionConcesion;
-            this.fechaNotificacionResolucionConcesion=item.fechaNotificacionResolucionConcesion;
+            this.fechaNotificacionResolucionConcesion= item.fechaNotificacionResolucionConcesion;
+
+            this.fechaPropuestaOJ=item.fechaPropuestaOJ;
+            this.expedienteContableOJ=item.expedienteContableOJ;
+            this.numeroDocumentoOJ=item.numeroDocumentoOJ;
+            this.importeOJ=item.importeOJ;
+            this.fechaPagoMaterialOJ=item.fechaPagoMaterialOJ;
+            this.numeroDocumentoOM=item.numeroDocumentoOM;
+            this.numeroDiasFuncionamiento=item.numeroDiasFuncionamiento;
+            this.objetivoNumeroActividades=item.objetivoNumeroActividades;
+            this.objetivoNumeroActividadesMarcadas=item.objetivoNumeroActividadesMarcadas;
+            this.objetivoNumeroMeses=item.objetivoNumeroMeses;
+            this.numeroActividadesAlcanzado=item.numeroActividadesAlcanzado;
+            this.numeroActividadesMarcadasAlcanzado=item.numeroActividadesMarcadasAlcanzado;
+            this.numeroMesesAlcanzado=item.numeroMesesAlcanzado;
+            this.importeJustificadoPersonal=item.importeJustificadoPersonal;
+            this.importeJustificadoDietas=item.importeJustificadoDietas;
+            
             
             
         },
@@ -471,38 +599,27 @@ export default {
             this.asiginarValores(item);
         },
 
-        imprimirPDF(item) {
-            
-            if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
-              alert("Antes de imprimir debes de rellenar los campos");
-            } else {
-             
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
-            }
+        imprimirPDF() {
+           this.pedirPDFAlServidor(this.idSolicitud, this.yearConvocatoria, this.nombreEntidad);
+            me.close();
+            me.listar();
+
         },
 
-        imprimirNotificacionPDF(item) {
-            if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
-              alert("Antes de imprimir debes de rellenar los campos");
-            } else {
-              
-            }
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirNotificacionPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
+        imprimirRTF() {
+            this.pedirRTFAlServidor(this.idSolicitud, this.yearConvocatoria, this.nombreEntidad);
+            me.close();
+            me.listar();
         },
 
         validar() {
           this.valida=0;
           this.validaMensaje=[];
           
-         
+          if (this.fechaComunicacionEntrada == null) {
+            this.validaMensaje.push("La fecha de comunicación no puede ser nula");
+            this.valida=1;
+          } 
           return this.valida;
           
         },
@@ -530,20 +647,39 @@ export default {
             this.subvencionPersonal='';
             this.subvencionDietas='';
             this.fechaComunicacionEntrada='';
-            this.fechaAeat='';
-            this.fechaAtrian='';
-            this.fechaSeguridadSocial='';
-            this.fechaRequerimientoSolicitud='';
-            this.documentacionRequerida='';
+            this.fechaAeat="";
+            this.fechaAtrian="";
+            this.fechaSeguridadSocial="";
+            this.fechaRequerimientoSolicitud="";
+
+            this.documentacionRequerida="";
+            
             this.fechaPropuestaConcesion='';
             this.expedienteContableD='';
             this.numeroDocumentoD='';
             this.fechaResolucionConcesion='';
             this.fechaNotificacionResolucionConcesion='';
+
+            this.fechaPropuestaOJ='';
+            this.expedienteContableOJ='';
+            this.numeroDocumentoOJ='';
+            this.importeOJ='';
+            this.fechaPagoMaterialOJ='';
+            this.numeroDocumentoOM='';
+            this.numeroDiasFuncionamiento='';
+            this.objetivoNumeroActividades='';
+            this.objetivoNumeroActividadesMarcadas='';
+            this.objetivoNumeroMeses='';
+            this.numeroActividadesAlcanzado='';
+            this.numeroActividadesMarcadasAlcanzado='';
+            this.numeroMesesAlcanzado='';
+            this.importeJustificadoPersonal='';
+            this.importeJustificadoDietas='';
+            
             
         },
 
-        modificar () {
+        guardar () {
             
             if (this.validar()) {
               
@@ -571,23 +707,42 @@ export default {
               'subvencionPersonal':me.subvencionPersonal,
               'subvencionDietas':me.subvencionDietas,
               'fechaComunicacionEntrada':me.fechaComunicacionEntrada,
-              'fechaAeat': me.fechaAeat,
-              'fechaAtrian': me.fechaAtrian,
+              'fechaAeat':me.fechaAeat,
+              'fechaAtrian':me.fechaAtrian,
               'fechaSeguridadSocial': me.fechaSeguridadSocial,
-              'fechaRequerimientoSolicitud': me.fechaRequerimientoSolicitud,
-              'documentacionRequerida': me.documentacionRequerida,
-              'fechaPropuestaConcesion': me.fechaPropuestaConcesion,
-              'expedienteContableD': me.expedienteContableD,
-              'numeroDocumentoD': me.numeroDocumentoD,
-              'fechaResolucionConcesion': me.fechaResolucionConcesion,
-              'fechaNotificacionResolucionConcesion': me.fechaNotificacionResolucionConcesion
+              'fechaRequerimientoSolicitud':me.fechaRequerimientoSolicitud,
+              'documentacionRequerida':me.documentacionRequerida,
+
+              'fechaPropuestaConcesion':me.fechaPropuestaConcesion,
+              'expedienteContableD':me.expedienteContableD,
+              'numeroDocumentoD':me.numeroDocumentoD,
+              'fechaResolucionConcesion':me.fechaResolucionConcesion,
+              'fechaNotificacionResolucionConcesion':me.fechaNotificacionResolucionConcesion,
+
+              'fechaPropuestaOJ':me.fechaPropuestaOJ,
+              'expedienteContableOJ':me.expedienteContableOJ,
+              'numeroDocumentoOJ':me.numeroDocumentoOJ,
+              'importeOJ':me.importeOJ,
+              'fechaPagoMaterialOJ':me.fechaPagoMaterialOJ,
+              'numeroDocumentoOM':me.numeroDocumentoOM,
+              'numeroDiasFuncionamiento':me.numeroDiasFuncionamiento,
+              'objetivoNumeroActividades':me.objetivoNumeroActividades,
+              'objetivoNumeroActividadesMarcadas':me.objetivoNumeroActividadesMarcadas,
+              'objetivoNumeroMeses':me.objetivoNumeroMeses,
+              'numeroActividadesAlcanzado':me.numeroActividadesAlcanzado,
+              'numeroActividadesMarcadasAlcanzado':me.numeroActividadesMarcadasAlcanzado,
+              'numeroMesesAlcanzado':me.numeroMesesAlcanzado,
+              'importeJustificadoPersonal':me.importeJustificadoPersonal,
+              'importeJustificadoDietas':me.importeJustificadoDietas
+              
               
                   
             }).then(function(response){
+                           
+                me.close();
+                me.listar();
+                           
               
-             
-              me.close();
-              me.listar();
                   
             }).catch(function(error){
               

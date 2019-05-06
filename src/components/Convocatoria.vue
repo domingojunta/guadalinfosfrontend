@@ -172,27 +172,17 @@
                       label="Aplicación Presupuestaria futura"
                      ></v-text-field>          
                   </v-flex>
-                  <v-flex xs2>
+                  
+
+                  <v-flex xs6>
                     <v-text-field 
                       type="number" 
-                      v-model="numeroDias" 
+                      v-model="numeroDiasYear" 
                       label="Días en el año 365/366"
                      ></v-text-field>          
                   </v-flex>
-                  <v-flex xs5>
-                    <v-text-field 
-                      type="text" 
-                      v-model="resuelvePago" 
-                      label="Número del resuelve de pago"
-                     ></v-text-field>          
-                  </v-flex>
-                  <v-flex xs5>
-                    <v-text-field 
-                      type="text" 
-                      v-model="resuelveJustificacion" 
-                      label="Número del resuelve de justificación"
-                     ></v-text-field>          
-                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  
 
                   <v-flex xs12 v-if="valida">
                     <div class="red--text" v-for="item in validaMensaje">{{item}}</div>
@@ -368,28 +358,16 @@
                       label="Aplicación Presupuestaria futura"
                      ></v-text-field>          
                   </v-flex>
-                  <v-flex xs2>
+                  
+
+                  <v-flex xs6>
                     <v-text-field 
                       type="number" 
-                      v-model="numeroDias" 
-                      
+                      v-model="numeroDiasYear" 
                       label="Días en el año 365/366"
                      ></v-text-field>          
                   </v-flex>
-                  <v-flex xs5>
-                    <v-text-field 
-                      type="text" 
-                      v-model="resuelvePago" 
-                      label="Número del resuelve de pago"
-                     ></v-text-field>          
-                  </v-flex>
-                  <v-flex xs5>
-                    <v-text-field 
-                      type="text" 
-                      v-model="resuelveJustificacion" 
-                      label="Número del resuelve de justificación"
-                     ></v-text-field>          
-                  </v-flex>
+                  <v-flex xs6></v-flex>
 
                   <v-flex xs12 v-if="valida">
                     <div class="red--text" v-for="item in validaMensaje">{{item}}</div>
@@ -504,15 +482,12 @@
                   <v-flex xs6>
                     <v-text-field disabled v-model="aplicacionPresupuestariaFutura" label="Aplicación Futura"></v-text-field>         
                   </v-flex>
-                  <v-flex xs2>
-                    <v-text-field disabled v-model="numeroDias" label="Número de Días"></v-text-field>         
+                  
+                  <v-flex xs6>
+                    <v-text-field disabled v-model="numeroDiasYear" label="Número de días en el Año"></v-text-field>          
                   </v-flex>
-                  <v-flex xs5>
-                    <v-text-field disabled v-model="resuelvePago" label="Resuelve Pago"></v-text-field>          
-                  </v-flex>
-                  <v-flex xs5>
-                    <v-text-field disabled v-model="resuelveJustificacion" label="Resuelve Justificación"></v-text-field>         
-                  </v-flex>
+                  <v-flex xs6></v-flex>
+                  
                 </v-layout>
               </v-container>
             </v-card-text>
@@ -553,9 +528,10 @@
               <v-icon small class="mr-2 blue--text" @click="editItem(props.item)">edit</v-icon>
               <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
             </td>
-            <td class="text-xs-center align-start">{{ props.item.idConvocatoria }}</td>
             <td class="text-xs-center">{{ props.item.yearConvocatoria }}</td>
-            <td class="text-xs-left" >{{ props.item.aliasOrden }}</td>
+            <td class="text-xs-center align-start">{{ props.item.idConvocatoria }}</td>
+            
+            <td class="text-xs-left" >{{ props.item.nombreConvocatoria }}</td>
             <td class="text-xs-left" >{{ props.item.subco }}</td>
           
         </template>
@@ -609,11 +585,11 @@ export default {
             importeGuadalinfoFuturo:0,
             importeELACorriente:0,
             importeELAFuturo:0,
-            numeroDias:0,
+           
+            numeroDiasYear:0,
             aplicacionPresupuestariaCorriente:'',
             aplicacionPresupuestariaFutura:'',
-            resuelvePago:'',
-            resuelveJustificacion:'',
+            
             convocatorias: null,
             ordenes: null,
 
@@ -623,9 +599,10 @@ export default {
 
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'id', align: 'center', sortable: true, value: 'idConvocatoria', class: 'primary--text' },
               { text: 'Año', align: 'center', sortable: true, value: 'yearConvocatoria', class: 'primary--text' },
-              { text: 'Orden', align: 'left', sortable: true, value: 'aliasOrden', class: 'primary--text' },
+              { text: 'id', align: 'center', sortable: true, value: 'idConvocatoria', class: 'primary--text' },
+              
+              { text: 'Orden', align: 'left', sortable: true, value: 'nombreConvocatoria', class: 'primary--text' },
               { text: 'SUBCO', align: 'left', sortable: true, value: 'subco', class: 'primary--text' },
               ],
             palabraBusqueda:'',
@@ -711,9 +688,9 @@ export default {
             this.importeELAFuturo=item.importeELAFuturo;
             this.aplicacionPresupuestariaCorriente=item.aplicacionPresupuestariaCorriente,
             this.aplicacionPresupuestariaFutura=item.aplicacionPresupuestariaFutura,
-            this.numeroDias=item.numeroDias,
-            this.resuelvePago=item.resuelvePago;
-            this.resuelveJustificacion=item.resuelveJustificacion;
+            
+            this.numeroDiasYear=item.numeroDiasYear
+            
             
         },
         validar() {
@@ -760,12 +737,8 @@ export default {
             this.importeELAFuturo=item.importeELAFuturo;
             this.aplicacionPresupuestariaCorriente=item.aplicacionPresupuestariaCorriente,
             this.aplicacionPresupuestariaFutura=item.aplicacionPresupuestariaFutura,
-            this.numeroDias=item.numeroDias,
-            this.resuelvePago=item.resuelvePago;
-            this.resuelveJustificacion=item.resuelveJustificacion;
-
             
-            
+            this.numeroDiasYear=item.numeroDiasYear
         },
 
         close() {
@@ -799,8 +772,8 @@ export default {
             this.importeGuadalinfoFuturo=0;
             this.importeELACorriente=0;
             this.importeELAFuturo=0;
-            this.resuelvePago='';
-            this.resuelveJustificacion='';
+            
+            this.numeroDiasYear=0;
             this.orden=null;
            
             this.palabraBusqueda='';
@@ -838,11 +811,11 @@ export default {
               'importeGuadalinfoFuturo': me.importeGuadalinfoFuturo,
               'importeELACorriente': me.importeELACorriente,
               'importeELAFuturo': me.importeELAFuturo,
-              'numeroDias': me.numeroDias,
+              
+              'numeroDiasYear': me.numeroDiasYear,
               'aplicacionPresupuestariaCorriente': me.aplicacionPresupuestariaCorriente,
               'aplicacionPresupuestariaFutura': me.aplicacionPresupuestariaFutura,
-              'resuelvePago': me.resuelvePago,
-              'resuelveJustificacion': me.resuelveJustificacion
+              
                   
                 }).then(function(response){
                   me.close();
@@ -859,6 +832,7 @@ export default {
 
         crear () {
 
+          
           this.idOrden = this.orden.idOrden;
           if (this.validar()) {
               
@@ -891,11 +865,11 @@ export default {
               'importeGuadalinfoFuturo': me.importeGuadalinfoFuturo,
               'importeELACorriente': me.importeELACorriente,
               'importeELAFuturo': me.importeELAFuturo,
-              'numeroDias': me.numeroDias,
+              
+              'numeroDiasYear': me.numeroDiasYear,
               'aplicacionPresupuestariaCorriente': me.aplicacionPresupuestariaCorriente,
               'aplicacionPresupuestariaFutura': me.aplicacionPresupuestariaFutura,
-              'resuelvePago': me.resuelvePago,
-              'resuelveJustificacion': me.resuelveJustificacion
+              
                   
                 }).then(function(response){
                   me.close();

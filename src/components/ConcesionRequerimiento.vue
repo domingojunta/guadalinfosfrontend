@@ -30,7 +30,7 @@
          
           <v-card>
             <v-card-title>
-              <span class="headline blue--text">Imprimir Comunicación</span>
+              <span class="headline blue--text">Imprimir Requerimiento</span>
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
@@ -134,7 +134,7 @@
                     label="Documentación a Requerir"
                     value=""
                   ></v-textarea>
-        </v-flex>
+                  </v-flex>
                   
                   
 
@@ -151,8 +151,14 @@
               <v-btn color="red darken-1" flat @click="close">
                 <v-icon large>cancel</v-icon>
               </v-btn>
-              <v-btn color="blue darken-1" flat @click="imprimir">
-                <v-icon large>print</v-icon>
+              <v-btn color="blue darken-1" flat @click="guardar">
+                <v-icon large>save</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="imprimirPDF">
+                <v-icon large>picture_as_pdf</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="imprimirRTF">
+                <v-icon large>chrome_reader_mode</v-icon>
               </v-btn>
               </v-card-actions>
             </v-card>
@@ -177,7 +183,10 @@
           :headers="headers" 
           :items="solicitudesConvocatoria" 
           class="elevation-1" 
-          :search="palabraBusqueda">
+          :search="palabraBusqueda"
+          :rows-per-page-items="rowsPerPageItems"
+          :pagination.sync="pagination"
+          >
 
         <template v-slot:items="props">
           
@@ -187,8 +196,9 @@
 
               
             </td>
+            <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
             <td class="text-xs-center align-start">{{ props.item.idSolicitud }}</td>
-            <td class="text-xs-center">{{ props.item.nombreEntidad }}</td>
+            
             <td class="text-xs-left" >{{ props.item.fechaEntrada }}</td>
             <td class="text-xs-left" >{{ props.item.expediente }}</td>
             <td class="text-xs-left" >{{ props.item.subcc }}</td>
@@ -236,12 +246,16 @@ export default {
             entidades:[],
             
             idConvocatoriaTrabajo: 1,
-            
+            rowsPerPageItems: [5,10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}],
+            pagination: {
+              rowsPerPage: 10
+            },
 
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'id', align: 'center', sortable: true, value: 'idSolicitud', class: 'primary--text' },
               { text: 'Entidad', align: 'center', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
+              { text: 'id', align: 'center', sortable: true, value: 'idSolicitud', class: 'primary--text' },
+              
               { text: 'Fecha', align: 'left', sortable: true, value: 'fechaEntrada', class: 'primary--text' },
               { text: 'Expediente', align: 'left', sortable: true, value: 'expediente', class: 'primary--text' },
               { text: 'subcc', align: 'left', sortable: true, value: 'subcc', class: 'primary--text' },
@@ -279,11 +293,6 @@ export default {
         val || this.close()
         }
     },
-    
-    
-
-    
-
     
     mounted() {
         this.select = this.$store.getters.getIdConvocatoriaTrabajo;
@@ -343,7 +352,41 @@ export default {
           });
 
           setTimeout(this.cambioCarga,1000);
-        }, 
+        },
+        
+        pedirRTFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
+          
+          let me = this;
+          this.cargando=1;
+          //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
+          //console.log("Voy a hacer una petición get a:"+direccion);
+          
+          axios('/reporte/requerimientoConcesion/'+idSolicitud, {
+            method: 'GET',
+            responseType: 'blob',
+            
+          }).then(function(response){
+            const file = new Blob(
+              [response.data],
+              {type: 'application/x-download'}
+            );
+            
+            const fileURL = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = fileURL;
+            let nombreFichero = 'RequerimientoSolicitud_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.rtf';
+            link.setAttribute('download',nombreFichero);
+            document.body.appendChild(link);
+            link.click();
+            //window.open(fileURL);
+            
+          }).catch(function(error){
+            
+            console.log("Error: "+error);
+          });
+
+          setTimeout(this.cambioCarga,1000);
+        },
 
         cambioCarga() {
           this.cargando=0;
@@ -422,13 +465,28 @@ export default {
             this.asiginarValores(item);
         },
 
-        imprimirPDF(item) {
-            
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria, item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
+        imprimirPDF() {
+
+          if (this.fechaEntrada==null || this.fechaEntrada=='') {
+              alert("Antes de imprimir debes de rellenar los campos");
+          } else {
+                    
+           this.pedirPDFAlServidor(this.idSolicitud, this.yearConvocatoria, this.nombreEntidad);
+            me.close();
+            me.listar();
+          }
+        },
+
+        imprimirRTF() {
+
+            if (this.fechaEntrada==null || this.fechaEntrada=='') {
+              alert("Antes de imprimir debes de rellenar los campos");
+            } else {
+              
+            this.pedirRTFAlServidor(this.idSolicitud, this.yearConvocatoria, this.nombreEntidad);
+            me.close();
+            me.listar();
+            }
         },
 
         validar() {
@@ -474,7 +532,7 @@ export default {
             
         },
 
-        imprimir () {
+        guardar () {
             
             if (this.validar()) {
               
@@ -510,18 +568,14 @@ export default {
               
                   
             }).then(function(response){
-              
-              if (me.documentacionRequerida != '') {
-                me.pedirPDFAlServidor(me.idSolicitud,me.yearConvocatoria,me.nombreEntidad);
-              } else {
+                           
                 me.close();
                 me.listar();
-              }
-              
+                           
               
                   
             }).catch(function(error){
-              me.pedirPDFAlServidor(me.idSolicitud,me.yearConvocatoria,me.nombreEntidad);
+              
               me.close();
               me.listar();
               

@@ -10,6 +10,15 @@ import ConcesionComunicacion from './components/ConcesionComunicacion.vue'
 import ConcesionRequerimiento from './components/ConcesionRequerimiento.vue'
 import ConcesionPropuesta from './components/ConcesionPropuesta.vue'
 import ConcesionResolucion from './components/ConcesionResolucion.vue'
+import ConcesionPrimerPago from './components/ConcesionPrimerPago.vue'
+import LiquidacionRequerimiento from './components/LiquidacionRequerimiento.vue'
+import LiquidacionPropuesta from './components/LiquidacionPropuesta.vue'
+import LiquidacionResolucion from './components/LiquidacionResolucion.vue'
+import LiquidacionJustificacion from './components/LiquidacionJustificacion.vue'
+import LiquidacionSegundoPago from './components/LiquidacionSegundoPago.vue'
+import ReintegroAcuerdoInicio from './components/ReintegroAcuerdoInicio.vue'
+import ReintegroResolucion from './components/ReintegroResolucion.vue'
+import ReintegroCobro from './components/ReintegroCobro.vue'
 import About from './views/About.vue'
 
 Vue.use(Router)
@@ -75,6 +84,51 @@ export default new Router({
       path: '/concesionResolucion',
       name: 'concesionResolucion',
       component: ConcesionResolucion
+    },
+    {
+      path: '/concesionPrimerPago',
+      name: 'concesionPrimerPago',
+      component: ConcesionPrimerPago
+    },
+    {
+      path: '/liquidacionRequerimiento',
+      name: 'liquidacionRequerimiento',
+      component: LiquidacionRequerimiento
+    },
+    {
+      path: '/liquidacionPropuesta',
+      name: 'liquidacionPropuesta',
+      component: LiquidacionPropuesta
+    },
+    {
+      path: '/liquidacionResolucion',
+      name: 'liquidacionResolucion',
+      component: LiquidacionResolucion
+    },
+    {
+      path: '/liquidacionJustificacion',
+      name: 'liquidacionJustificacion',
+      component: LiquidacionJustificacion
+    },
+    {
+      path: '/liquidacionSegundoPago',
+      name: 'liquidacionSegundoPago',
+      component: LiquidacionSegundoPago
+    },
+    {
+      path: '/reintegroAcuerdoInicio',
+      name: 'reintegroAcuerdoInicio',
+      component: ReintegroAcuerdoInicio
+    },
+    {
+      path: '/reintegroResolucion',
+      name: 'reintegroResolucion',
+      component: ReintegroResolucion
+    },
+    {
+      path: '/reintegroCobro',
+      name: 'reintegroCobro',
+      component: ReintegroCobro
     }
   ]
 })

@@ -215,7 +215,10 @@
           :headers="headers" 
           :items="entidades" 
           class="elevation-1" 
-          :search="palabraBusqueda">
+          :search="palabraBusqueda"
+          :rows-per-page-items="rowsPerPageItems"
+          :pagination.sync="pagination"
+          >
 
         <template v-slot:items="props">
           
@@ -223,8 +226,9 @@
             <v-icon small class="mr-2 blue--text" @click="editItem(props.item)">edit</v-icon>
             <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
           </td>
-          <td class="text-xs-center">{{ props.item.idEntidad }}</td>
           <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
+          <td class="text-xs-center">{{ props.item.idEntidad }}</td>
+          
           <td class="text-xs-center">{{ props.item.cif }}</td>
           <td class="text-xs-left text-capitalize">{{ props.item.tipoEntidad }}</td>
           <td class="text-xs-center">{{ props.item.grupoEntidad }}</td>
@@ -271,10 +275,15 @@ export default {
             entidades: null,
             dialog: false,
             dialog2: false,
+            rowsPerPageItems: [5,10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}],
+            pagination: {
+              rowsPerPage: 10
+            },
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'id', align: 'center', sortable: true, value: 'idEntidad', class: 'primary--text' },
               { text: 'Nombre', align: 'center', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
+              { text: 'id', align: 'center', sortable: true, value: 'idEntidad', class: 'primary--text' },
+              
               { text: 'CIF', align: 'center', sortable: true, value: 'cif', class: 'primary--text' },
               { text: 'Tipo', align: 'center', sortable: true, value: 'tipoEntidad', class: 'primary--text' },
               { text: 'Grupo', align: 'center', sortable: true, value: 'grupoEntidad', class: 'primary--text' },

@@ -90,10 +90,23 @@
                </v-list-tile-content>
               </v-list-tile>
 
+              <!--Primer Pago-->
+              <v-list-tile :to="{name: 'concesionPrimerPago'}">
+                <v-list-tile-action>
+                  <v-icon>euro_symbol</v-icon>
+                </v-list-tile-action>
+               <v-list-tile-content>
+                 <v-list-tile-title>
+                   Primer pago
+                 </v-list-tile-title>
+               </v-list-tile-content>
+              </v-list-tile>
+
+
             </v-list-group>
           </template>
 
-          <!--Pagos-->
+          <!--Liquidación-->
           <template>
 
             
@@ -105,30 +118,70 @@
                 
                 <v-list-tile-content>
                   <v-list-tile-title >
-                    Pagos  
+                    Liquidación  
                   </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+              
+              <!--Requerimiento de Justificación-->
+              <v-list-tile :to="{name: 'liquidacionRequerimiento'}">
                 <v-list-tile-action>
-                  <v-icon>euro_symbol</v-icon>
+                  <v-icon>mail</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
-                   Primer pago
+                   Requerimiento Justificación
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!--Propuesta de Liquidación y Notificación-->
+              <v-list-tile :to="{name: 'liquidacionPropuesta'}">
                 <v-list-tile-action>
-                  <v-icon>euro_symbol</v-icon>
+                  <v-icon>description</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
-                   Segundo pago
+                   Propuesta Liquidación
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
+
+              <!--Resolución de Liquidación y Notificación-->
+              <v-list-tile :to="{name: 'liquidacionResolucion'}">
+                <v-list-tile-action>
+                  <v-icon>description</v-icon>
+                </v-list-tile-action>
+               <v-list-tile-content>
+                 <v-list-tile-title>
+                   Resolución Liquidación
+                 </v-list-tile-title>
+               </v-list-tile-content>
+              </v-list-tile>
+
+              <!--Certificados de Justificación-->
+              <v-list-tile :to="{name: 'liquidacionJustificacion'}">
+                <v-list-tile-action>
+                  <v-icon>description</v-icon>
+                </v-list-tile-action>
+               <v-list-tile-content>
+                 <v-list-tile-title>
+                   Certificados de Justificación
+                 </v-list-tile-title>
+               </v-list-tile-content>
+              </v-list-tile>
+
+              <!--Segundo Pago-->
+              <v-list-tile :to="{name: 'liquidacionSegundoPago'}">
+                <v-list-tile-action>
+                  <v-icon>attach_money</v-icon>
+                </v-list-tile-action>
+               <v-list-tile-content>
+                 <v-list-tile-title>
+                   Segundo Pago
+                 </v-list-tile-title>
+               </v-list-tile-content>
+              </v-list-tile>              
               
             </v-list-group>
           </template>
@@ -147,43 +200,40 @@
                   </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!-- AIR -->
+              <v-list-tile :to="{name: 'reintegroAcuerdoInicio'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
-                   Acuerdo Inicio
+                   Acuerdo Inicio Reintegro
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              <!-- Propuesta Reintegro -->
+              <v-list-tile :to="{name: 'reintegroResolucion'}">
                 <v-list-tile-action>
                   <v-icon>description</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
-                   Propuesta
+                   Resolución Reintegro
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
+
+              
+              <!-- Cobro Reintegro -->
+              <v-list-tile :to="{name: 'reintegroCobro'}">
                 <v-list-tile-action>
-                  <v-icon>description</v-icon>
+                  <v-icon>attach_money</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
-                   Alegaciones
-                 </v-list-tile-title>
-               </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{name: ''}">
-                <v-list-tile-action>
-                  <v-icon>description</v-icon>
-                </v-list-tile-action>
-               <v-list-tile-content>
-                 <v-list-tile-title>
-                   Resolución
+                   Cobro del Reintegro
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
@@ -227,10 +277,10 @@
               </v-list-tile>
               <v-list-tile :to="{name: 'entidades'}">
                 <v-list-tile-action>
-                  <v-icon class="primary--text">account_balance</v-icon>
+                  <v-icon>account_balance</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
-                 <v-list-tile-title class="primary--text">
+                 <v-list-tile-title>
                     Entidades  
                  </v-list-tile-title>
                </v-list-tile-content>
