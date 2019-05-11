@@ -195,7 +195,7 @@
               <v-btn color="red darken-1" flat @click="close">
                 <v-icon large>cancel</v-icon>
               </v-btn>
-              <v-btn color="blue darken-1" flat @click="modificar">
+              <v-btn v-if="esAdministrador || esUsuario" color="blue darken-1" flat @click="modificar">
                 <v-icon large>save</v-icon>
               </v-btn>
               </v-card-actions>
@@ -204,6 +204,7 @@
    
         <!-- Ventana Emergente Crear-->
 
+        <template v-if="esAdministrador || esUsuario">
         <v-dialog v-model="dialogCrear" max-width="80%">
           <template v-slot:activator="{ on }">
             <v-btn dark class="mb-2 blue" v-on="on" icon >
@@ -503,7 +504,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
+        </template>
         
       </v-toolbar>
 
@@ -526,7 +527,7 @@
           
             <td class="justify-center layout px-0">
               <v-icon small class="mr-2 blue--text" @click="editItem(props.item)">edit</v-icon>
-              <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
+              <v-icon v-if="esAdministrador || esUsuario" small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
             </td>
             <td class="text-xs-center">{{ props.item.yearConvocatoria }}</td>
             <td class="text-xs-center align-start">{{ props.item.idConvocatoria }}</td>
@@ -606,7 +607,10 @@ export default {
               { text: 'SUBCO', align: 'left', sortable: true, value: 'subco', class: 'primary--text' },
               ],
             palabraBusqueda:'',
-            objeto: null
+            objeto: null,
+            token: null,
+            header: null,
+            configuration: null,
             
             
         }
@@ -631,6 +635,9 @@ export default {
         }
     },
     mounted() {
+      this.token = this.$store.state.token;
+        this.header = {"Authorization" : "Bearer "+this.token};
+        this.configuration = {headers : this.header};
       this.convocatorias= this.$store.getters.getConvocatorias;
         this.ordenes = this.$store.getters.getOrdenes;
         let initialYear = new Date().getFullYear();
@@ -638,6 +645,29 @@ export default {
           this.years.push((initialYear+index).toString());
           
         }
+    },
+    computed: {
+      solicitudesConvocatoria: function() {
+        let solicitudesAListar = this.solicitudes.filter(
+          (item) => item.idConvocatoria === this.idConvocatoriaTrabajo
+        );
+        return solicitudesAListar;
+      },
+      logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
     },
     
     methods: {

@@ -1066,7 +1066,10 @@ export default {
             
             fechaResolucionReintegro:'',
             fechaNotificacionResolucionReintegro:'',
-            fechaAbonoReintegro:''
+            fechaAbonoReintegro:'',
+            token: null,
+            header: null,
+            configuration: null,
             
             
         }
@@ -1084,6 +1087,9 @@ export default {
 
     
     mounted() {
+        this.token = this.$store.state.token;
+        this.header = {"Authorization" : "Bearer "+this.token};
+        this.configuration = {headers : this.header};
         this.select = this.$store.getters.getIdConvocatoriaTrabajo;
         //console.log("El tipo de select es:"+typeof(this.select));
         this.idConvocatoriaTrabajo = this.select;
@@ -1100,7 +1106,22 @@ export default {
           (item) => item.idConvocatoria === this.idConvocatoriaTrabajo
         );
         return solicitudesAListar;
-      }
+      },
+      logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
     },
     
     methods: {

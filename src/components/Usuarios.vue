@@ -2,8 +2,8 @@
   <v-layout align-start>
     <v-flex>
       <v-toolbar flat color="white">
-        <v-icon color="blue">account_balance</v-icon>
-        <v-toolbar-title class="primary--text">Entidades</v-toolbar-title>
+        <v-icon color="blue">person</v-icon>
+        <v-toolbar-title class="primary--text">Usuarios</v-toolbar-title>
         
         <v-spacer></v-spacer>
         <v-text-field class="text-xs-center" v-model="palabraBusqueda" 
@@ -300,7 +300,22 @@ export default {
     computed: {
         formTitle () {
         return this.editedIndex === -1 ? 'Crear Entidad' : 'Editar Entidad'
-        }
+        },
+        logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
         
     },
 
@@ -321,34 +336,10 @@ export default {
         
         
     },
-
-    mounted() {
+    mounted(){
       this.token = this.$store.state.token;
         this.header = {"Authorization" : "Bearer "+this.token};
         this.configuration = {headers : this.header};
-    },
-    computed: {
-      solicitudesConvocatoria: function() {
-        let solicitudesAListar = this.solicitudes.filter(
-          (item) => item.idConvocatoria === this.idConvocatoriaTrabajo
-        );
-        return solicitudesAListar;
-      },
-      logueado() {
-      return this.$store.getters.getUsuario;
-    },
-    esAdministrador() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'ADMINISTRADOR';
-    },
-    esUsuario() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'USUARIO';
-    },
-    esLector() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'LECTOR';
-    }
     },
     methods: {
 

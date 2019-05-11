@@ -1,9 +1,15 @@
 <template>
   
     <v-app id="inspire">
-      <v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
+      <v-navigation-drawer 
+        fixed 
+        :clipped="$vuetify.breakpoint.mdAndUp" 
+        app 
+        v-model="drawer"
+        v-if="logueado">
+
         <v-list dense>
-          <template>
+          <template v-if="esAdministrador || esUsuario || esLector">
             <v-list-tile :to="{name: 'home'}">
               <v-list-tile-action>
                 <v-icon color="primary darken-3">home</v-icon>
@@ -16,7 +22,7 @@
           </template>
 
           <!--Concesión-->
-          <template>
+          <template v-if="esAdministrador || esUsuario">
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
                 <v-list-tile-action>
@@ -107,7 +113,7 @@
           </template>
 
           <!--Liquidación-->
-          <template>
+          <template  v-if="esAdministrador || esUsuario">
 
             
             <v-list-group>
@@ -187,7 +193,7 @@
           </template>
 
           <!--Reintegros-->
-          <template>
+          <template  v-if="esAdministrador || esUsuario">
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
                 <v-list-tile-action>
@@ -242,7 +248,7 @@
           </template>
 
           <!--Tablas-->
-          <template>
+          <template  v-if="esAdministrador || esUsuario || esLector">
             <v-list-group>
               <v-list-tile color="primary" slot="activator">
                 <v-list-tile-action>
@@ -295,27 +301,9 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              
-            </v-list-group>
-          </template>
-
-          <!--Accesos-->
-          <template>
-            <v-list-group>
-              <v-list-tile color="primary" slot="activator">
+              <v-list-tile :to="{name: 'usuarios'}"  v-if="esAdministrador">
                 <v-list-tile-action>
-                  <v-icon color="primary darken-3">perm_identity</v-icon>
-                </v-list-tile-action>
-                
-                <v-list-tile-content>
-                  <v-list-tile-title >
-                    Accesos  
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{name: ''}">
-                <v-list-tile-action>
-                  <v-icon>group</v-icon>
+                  <v-icon>person</v-icon>
                 </v-list-tile-action>
                <v-list-tile-content>
                  <v-list-tile-title>
@@ -323,23 +311,12 @@
                  </v-list-tile-title>
                </v-list-tile-content>
               </v-list-tile>
-              <v-list-tile :to="{name: ''}">
-                <v-list-tile-action>
-                  <v-icon>people_outline</v-icon>
-                </v-list-tile-action>
-               <v-list-tile-content>
-                 <v-list-tile-title>
-                   Roles
-                 </v-list-tile-title>
-               </v-list-tile-content>
-              </v-list-tile>
-              
-              
             </v-list-group>
           </template>
 
+          
           <!--Créditos-->
-          <template>
+          <template  v-if="esAdministrador || esUsuario || esLector">
             <v-list-tile color="primary" :to="{name: 'about'}">
               <v-list-tile-action>
                 <v-icon color="primary darken-3">group</v-icon>
@@ -365,10 +342,12 @@
         </v-toolbar-title>
         
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>apps</v-icon>
+        <v-btn @click="salir" icon v-if="logueado">
+          <v-icon class="mr-1" >logout</v-icon>Salir
         </v-btn>
-       
+         <v-btn :to="{name: 'login'}" icon v-else>
+          <v-icon class="mr-1">apps</v-icon>
+        </v-btn>
         
       </v-toolbar>
       <v-content>
@@ -399,7 +378,37 @@ export default {
   data() {
     return {
       drawer: null
-    };
+    }
+  },
+  computed: {
+    logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
+  },
+  created() {
+     this.$store.dispatch("autologin");
+  },
+
+  methods: {
+    salir() {
+      this.$store.dispatch("salir");
+    }
+    
   }
-};
+  
+
+  }
+
 </script>

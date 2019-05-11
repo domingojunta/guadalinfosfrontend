@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import decode from 'jwt-decode'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -1228,6 +1230,8 @@ export default new Vuex.Store({
       provincias: ['Almería','Cádiz','Córdoba','Granada','Huelva','Jaén','Sevilla'],
       tipos: ['ayuntamiento','ELA'],
       grupos: ['A','B','C'],
+      token: null,
+      usuario: null
     
   },
   getters: {
@@ -1238,26 +1242,44 @@ export default new Vuex.Store({
     getProvincias : (state)=>state.provincias,
     getTipos: (state)=>state.tipos,
     getGrupos: (state) => state.grupos,
-    getSolicitudes: (state) => state.solicitudes
-    
-
-
+    getSolicitudes: (state) => state.solicitudes,
+    getToken: (state) => state.token,
+    getUsuario: (state) => state.usuario
   },
   mutations: {
     cambiarConvocatoriaTrabajo: (state,payload) => state.idConvocatoriaTrabajo = payload,
     cambiarEntidades: (state,payload) => state.entidades = payload,
     cambiarOrdenes: (state,payload) => state.ordenes = payload,
     cambiarConvocatorias: (state,payload) => state.convocatorias = payload,
-    cambiarSolicitudes: (state,payload) => state.solicitudes = payload
-    
+    cambiarSolicitudes: (state,payload) => state.solicitudes = payload,
+    setToken: (state,payload) => state.token = payload,
+    setUsuario: (state,payload) => state.usuario=payload
   },
   actions: {
     cambiarConvocatoriaTrabajoAsync: (context,payload) => context.commit('cambiarConvocatoriaTrabajo',payload),
     setEntidadesAsync: (context,payload) => context.commit('cambiarEntidades',payload),
     setOrdenesAsync: (context,payload) => context.commit('cambiarOrdenes',payload),
     setConvocatoriasAsync: (context,payload) => context.commit('cambiarConvocatorias',payload),
-    setSolicitudesAsync: (context,payload) => context.commit('cambiarSolicitudes',payload)
-
+    setSolicitudesAsync: (context,payload) => context.commit('cambiarSolicitudes',payload),
+    guardarToken(context,payload) {
+        context.commit('setToken',payload)
+        context.commit('setUsuario', decode(payload))
+        localStorage.setItem("token",payload)
+    },
+    autologin(context) {
+        let payload = localStorage.getItem("token");
+        if (payload) {
+            context.commit('setToken',payload)
+            context.commit('setUsuario', decode(payload))
+        }
+        router.push({name: 'home'})
+    },
+    salir(context) {
+            context.commit('setToken',null)
+            context.commit('setUsuario', null)
+            localStorage.removeItem("token")
+            router.push({name: 'login'})
+    }
     },
    
 

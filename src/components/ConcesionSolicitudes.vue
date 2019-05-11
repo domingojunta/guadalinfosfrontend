@@ -142,15 +142,17 @@
               <v-btn color="red darken-1" flat @click="close">
                 <v-icon large>cancel</v-icon>
               </v-btn>
-              <v-btn color="blue darken-1" flat @click="modificar">
+              <v-btn v-if="esAdministrador || esUsuario" color="blue darken-1" flat @click="modificar">
                 <v-icon large>save</v-icon>
               </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
    
+        
+        
         <!-- Ventana Emergente Crear-->
-
+        
         <v-dialog v-model="dialogCrear" max-width="80%">
           <template v-slot:activator="{ on }">
             <v-btn dark class="mb-2 blue" v-on="on" icon >
@@ -345,7 +347,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
+        
         
       </v-toolbar>
 
@@ -449,6 +451,9 @@ export default {
             costeDietas:'',
             subvencionPersonal:'',
             subvencionDietas:'',
+            token: null,
+            header: null,
+            configuration: null,
              
         }
     },
@@ -465,6 +470,9 @@ export default {
 
     
     mounted() {
+        this.token = this.$store.state.token;
+        this.header = {"Authorization" : "Bearer "+this.token};
+        this.configuration = {headers : this.header};
         this.select = this.$store.getters.getIdConvocatoriaTrabajo;
         //console.log("El tipo de select es:"+typeof(this.select));
         this.idConvocatoriaTrabajo = this.select;
@@ -481,7 +489,22 @@ export default {
           (item) => item.idConvocatoria === this.idConvocatoriaTrabajo
         );
         return solicitudesAListar;
-      }
+      },
+      logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
     },
     
     methods: {

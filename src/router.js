@@ -19,18 +19,26 @@ import LiquidacionSegundoPago from './components/LiquidacionSegundoPago.vue'
 import ReintegroAcuerdoInicio from './components/ReintegroAcuerdoInicio.vue'
 import ReintegroResolucion from './components/ReintegroResolucion.vue'
 import ReintegroCobro from './components/ReintegroCobro.vue'
+import Login from './components/Login.vue'
+import store from './store'
 import About from './views/About.vue'
+import Usuarios from './components/Usuarios.vue'
 
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/about',
@@ -38,97 +46,221 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: About
+      component: About,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/entidades',
       name: 'entidades',
-      component: Entidades
+      component: Entidades,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/ordenes',
       name: 'ordenes',
-      component: Ordenes
+      component: Ordenes,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/convocatorias',
       name: 'convocatorias',
-      component: Convocatorias
+      component: Convocatorias,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/solicitudes',
       name: 'solicitudes',
-      component: Solicitudes
+      component: Solicitudes,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true,
+        LECTOR:true
+      }
     },
     {
       path: '/concesionSolicitudes',
       name: 'concesionSolicitudes',
-      component: ConcesionSolicitudes
+      component: ConcesionSolicitudes,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/concesionComunicacion',
       name: 'concesionComunicacion',
-      component: ConcesionComunicacion
+      component: ConcesionComunicacion,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/concesionRequerimiento',
       name: 'concesionRequerimiento',
-      component: ConcesionRequerimiento
+      component: ConcesionRequerimiento,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/concesionPropuesta',
       name: 'concesionPropuesta',
-      component: ConcesionPropuesta
+      component: ConcesionPropuesta,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/concesionResolucion',
       name: 'concesionResolucion',
-      component: ConcesionResolucion
+      component: ConcesionResolucion,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/concesionPrimerPago',
       name: 'concesionPrimerPago',
-      component: ConcesionPrimerPago
+      component: ConcesionPrimerPago,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/liquidacionRequerimiento',
       name: 'liquidacionRequerimiento',
-      component: LiquidacionRequerimiento
+      component: LiquidacionRequerimiento,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/liquidacionPropuesta',
       name: 'liquidacionPropuesta',
-      component: LiquidacionPropuesta
+      component: LiquidacionPropuesta,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/liquidacionResolucion',
       name: 'liquidacionResolucion',
-      component: LiquidacionResolucion
+      component: LiquidacionResolucion,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/liquidacionJustificacion',
       name: 'liquidacionJustificacion',
-      component: LiquidacionJustificacion
+      component: LiquidacionJustificacion,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/liquidacionSegundoPago',
       name: 'liquidacionSegundoPago',
-      component: LiquidacionSegundoPago
+      component: LiquidacionSegundoPago,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/reintegroAcuerdoInicio',
       name: 'reintegroAcuerdoInicio',
-      component: ReintegroAcuerdoInicio
+      component: ReintegroAcuerdoInicio,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/reintegroResolucion',
       name: 'reintegroResolucion',
-      component: ReintegroResolucion
+      component: ReintegroResolucion,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
     },
     {
       path: '/reintegroCobro',
       name: 'reintegroCobro',
-      component: ReintegroCobro
+      component: ReintegroCobro,
+      meta: {
+        ADMINISTRADOR: true,
+        USUARIO:true
+      }
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component: Usuarios,
+      meta: {
+        ADMINISTRADOR: true
+      }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: {
+        libre: true
+      }
     }
   ]
 })
+
+router.beforeEach((to,from,next)=>{
+
+  if (to.matched.some(record => record.meta.libre)) {
+    next()
+  } else if (store.state.usuario && store.state.usuario.rol=='ADMINISTRADOR' ){
+    if (to.matched.some(record=> record.meta.ADMINISTRADOR)) {
+      next()
+    }
+  } else if (store.state.usuario && store.state.usuario.rol=='USUARIO' ){
+    if (to.matched.some(record=> record.meta.USUARIO)) {
+      next()
+    }
+  } else if (store.state.usuario && store.state.usuario.rol=='LECTOR' ){
+    if (to.matched.some(record=> record.meta.LECTOR)) {
+      next()
+    }
+  } else {
+    next({name:'login'})
+  }
+
+})
+
+
+
+
+export default router

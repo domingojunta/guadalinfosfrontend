@@ -196,13 +196,31 @@ export default {
               ],
             palabraBusqueda:'',
             editedIndex: -1,
+            token: null,
+            header: null,
+            configuration: null,
             
         }
     },
     computed: {
         formTitle () {
         return this.editedIndex === -1 ? 'Crear Orden' : 'Editar Orden'
-        }
+        },
+        logueado() {
+      return this.$store.getters.getUsuario;
+    },
+    esAdministrador() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+    },
+    esUsuario() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+    },
+    esLector() {
+      return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
+    }
         
     },
 
@@ -216,6 +234,12 @@ export default {
         
         this.ordenes= this.$store.getters.getOrdenes;
         
+    },
+
+    mounted() {
+      this.token = this.$store.state.token;
+        this.header = {"Authorization" : "Bearer "+this.token};
+        this.configuration = {headers : this.header};
     },
     methods: {
 

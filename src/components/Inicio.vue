@@ -51,6 +51,34 @@
         
       </v-flex>
       
+      
+    </v-layout>
+    <v-layout>
+      <v-flex class="red--text" v-if="errorCargaEntidades">
+        <v-icon color="red">error</v-icon>
+        {{errorCargaEntidades}}
+      </v-flex>
+      
+    </v-layout>
+    <v-layout>
+      <v-flex class="red--text" v-if="errorCargaOrdenes">
+        <v-icon color="red">error</v-icon>
+        {{errorCargaOrdenes}}
+      </v-flex>
+      
+    </v-layout>
+    <v-layout>
+      <v-flex class="red--text" v-if="errorCargaSolicitudes">
+        <v-icon color="red">error</v-icon>
+        {{errorCargaSolicitudes}}
+      </v-flex>
+      
+    </v-layout>
+    <v-layout>
+      <v-flex class="red--text" v-if="errorCargaConvocatoria">
+        <v-icon color="red">error</v-icon>
+        {{errorCargaConvocatoria}}
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -66,14 +94,22 @@ export default {
       select: "",
       entidades: null,
       ordenes: null,
-      solicitudes: null
-      
+      solicitudes: null,
+      errorCargaSolicitudes: null,
+      errorCargaConvocatoria: null,
+      errorCargaOrdenes: null,
+      errorCargaEntidades: null,
+      token: null,
+      header: null,
+      configuration: null,
     }
   },
   methods: {
 
     cambioCarga() {
       this.cargando=0;
+      
+      
     },
     
     cambiarEjercicioTrabajo() {
@@ -85,14 +121,19 @@ export default {
 
     cargarEntidades() {
       let me = this;
-     
-      axios.get('/api/entidades_listar').then(function(response){
+      
+      axios.get('/api/entidades_listar',me.configuration).then(function(response){
         me.entidades = response.data;
         me.$store.dispatch('setEntidadesAsync',me.entidades);
         //console.log("Acabo de actualizar los datos de entidades desde BBDD...");
       }).catch(function(error){
-        console.log("Trabajaré con las entidades harcodeadas por defecto...");
-        console.log("Error: "+error);
+        //console.log("Trabajaré con las entidades harcodeadas por defecto...");
+        //console.log("Error: "+error);
+        if (error.response.status==500) {
+          me.errorCargaEntidades="Ocurrió un error interno en el servidor al descargar las Entidades...";
+        } else {
+          me.errorCargaEntidades="No se pudieron descargar las Entidades del Servidor...";
+        }
         
       });
       
@@ -100,27 +141,33 @@ export default {
     cargarOrdenes() {
       let me = this;
       
-      axios.get('/api/ordenes_listar').then(function(response){
+      axios.get('/api/ordenes_listar',me.configuration).then(function(response){
         me.ordenes = response.data;
         me.$store.dispatch('setOrdenesAsync',me.ordenes);
         //console.log("Acabo de actualizar los datos de Ordenes desde BBDD...");
       }).catch(function(error){
-        console.log("Trabajaré con las órdenes harcodeadas por defecto...");
-        console.log("Error: "+error);
+        if (error.response.status==500) {
+          me.errorCargaOrdenes="Ocurrió un error interno en el servidor al descargar las Órdenes...";
+        } else {
+          me.errorCargaOrdenes="No se pudieron descargar las Órdenes del Servidor...";
+        }
         
       });
     
     },
     cargarConvocatorias() {
       let me = this;
-      
-      axios.get('/api/convocatorias_listar').then(function(response){
+     
+      axios.get('/api/convocatorias_listar',me.configuration).then(function(response){
         me.convocatorias = response.data;
         me.$store.dispatch('setConvocatoriasAsync',me.convocatorias);
         //console.log("Acabo de actualizar los datos de convocatorias desde BBDD...");
       }).catch(function(error){
-        console.log("Trabajaré con las convocatorias harcodeadas por defecto...");
-        console.log("Error: "+error);
+        if (error.response.status==500) {
+          me.errorCargaConvocatoria="Ocurrió un error interno en el servidor al descargar las Convocatorias...";
+        } else {
+          me.errorCargaConvocatoria="No se pudieron descargar las Convocatorias del Servidor...";
+        }
         
       });
 
@@ -130,13 +177,16 @@ export default {
     cargarSolicitudes() {
       let me = this;
       
-      axios.get('/api/solicitud_listar').then(function(response){
+      axios.get('/api/solicitud_listar',me.configuration).then(function(response){
         me.solicitudes = response.data;
         me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
         //console.log("Acabo de actualizar los datos de solicitudes desde BBDD...");
       }).catch(function(error){
-        console.log("Trabajaré con las solicitudes harcodeadas por defecto...");
-        console.log("Error: "+error);
+        if (error.response.status==500) {
+          me.errorCargaSolicitudes="Ocurrió un error interno en el servidor al descargar las Solicitudes...";
+        } else {
+          me.errorCargaSolicitudes="No se pudieron descargar las Solicitudes del Servidor...";
+        }
         
       });
 
@@ -146,7 +196,9 @@ export default {
   },
 
   mounted() {
-      
+      this.token = this.$store.state.token;
+      this.header = {"Authorization" : "Bearer "+this.token};
+      this.configuration = {headers : this.header};
       this.cargarEntidades();
       this.cargarOrdenes();
       this.cargarConvocatorias();
