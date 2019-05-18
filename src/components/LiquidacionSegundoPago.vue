@@ -583,7 +583,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar', me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -756,7 +756,7 @@ export default {
 
               
                   
-            }).then(function(response){
+            }, me.configuration).then(function(response){
               
              
               me.close();

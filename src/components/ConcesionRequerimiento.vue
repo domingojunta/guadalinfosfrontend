@@ -348,6 +348,7 @@ export default {
           axios('/reporte/requerimientoConcesion/', {
             method: 'PUT',
             responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
             data: {
               'idSolicitud':me.idSolicitud,
               'documentacionRequerida':me.documentacionRequerida
@@ -385,6 +386,7 @@ export default {
           axios('/reporte/requerimientoConcesion/'+idSolicitud, {
             method: 'GET',
             responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
             
           }).then(function(response){
             const file = new Blob(
@@ -463,7 +465,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar',me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -588,7 +590,7 @@ export default {
               'documentacionRequerida':me.documentacionRequerida
               
                   
-            }).then(function(response){
+            },me.configuration).then(function(response){
                            
                 me.close();
                 me.listar();

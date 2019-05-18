@@ -444,7 +444,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar',me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -556,7 +556,8 @@ export default {
               'numeroDocumentoOJ':me.numeroDocumentoOJ,
               'importeOJ':me.importeOJ,
               'fechaPagoMaterialOJ':me.fechaPagoMaterialOJ,
-              'numeroDocumentoOM':me.numeroDocumentoOM,}
+              'numeroDocumentoOM':me.numeroDocumentoOM,
+            },me.configuration
             ).then(function(response){me.close();
               me.listar();}
             ).catch(function(error){me.close();

@@ -352,7 +352,8 @@ export default {
           
           axios('/reporte/resolucionConcesion/'+idSolicitud, {
             method: 'GET',
-            responseType: 'blob'
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -385,7 +386,8 @@ export default {
           
           axios('/reporte/resolucionConcesionNotificacion/'+idSolicitud, {
             method: 'GET',
-            responseType: 'blob'
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -469,7 +471,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar', me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -494,11 +496,12 @@ export default {
 
         imprimirPDF(item) {
             
+            this.asiginarValores(item);
             if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
               alert("Antes de imprimir debes de rellenar los campos");
             } else {
              
-            this.asiginarValores(item);
+            
             //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
             this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
             //this.crearPDF();
@@ -507,16 +510,19 @@ export default {
         },
 
         imprimirNotificacionPDF(item) {
+            
+            this.asiginarValores(item);
+            
             if (this.fechaPropuestaConcesion==null || this.fechaPropuestaConcesion=='') {
               alert("Antes de imprimir debes de rellenar los campos");
             } else {
-              
+              //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
+              this.pedirNotificacionPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
+              //this.crearPDF();
+              this.limpiar();
             }
-            this.asiginarValores(item);
-            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
-            this.pedirNotificacionPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
-            //this.crearPDF();
-            this.limpiar();
+            
+            
         },
 
         validar() {
@@ -604,7 +610,7 @@ export default {
               'fechaNotificacionResolucionConcesion': me.fechaNotificacionResolucionConcesion
               
                   
-            }).then(function(response){
+            }, me.configuration).then(function(response){
               
              
               me.close();

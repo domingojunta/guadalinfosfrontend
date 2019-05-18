@@ -651,7 +651,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar', me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -856,7 +856,7 @@ export default {
               'fechaNotificacionResolucionReintegro':me.fechaNotificacionResolucionReintegro,
               'fechaAbonoReintegro':me.fechaAbonoReintegro
                   
-            }).then(function(response){
+            }, me.configuration).then(function(response){
               me.close();
               me.listar();
                   
@@ -952,7 +952,7 @@ export default {
               'fechaNotificacionResolucionReintegro':me.fechaNotificacionResolucionReintegro,
               'fechaAbonoReintegro':me.fechaAbonoReintegro
                   
-                }).then(function(response){
+                }, me.configuration).then(function(response){
                   me.close();
                   me.listar();
                 }).catch(function(error){
@@ -969,7 +969,7 @@ export default {
           this.close();
           let me = this;
                 this.cargando=1;
-                axios.delete('/api/solicitud/'+id).then(function(response){
+                axios.delete('/api/solicitud/'+id, me.configuration).then(function(response){
                   me.close();
                   me.listar();
                   

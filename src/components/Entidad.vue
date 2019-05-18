@@ -359,7 +359,7 @@ export default {
         listar() {
           let me = this;
           this.cargando=1;
-          axios.get('/api/entidades_listar').then(function(response){
+          axios.get('/api/entidades_listar',me.configuration).then(function(response){
             me.entidades = response.data;
             me.$store.dispatch('setEntidadesAsync',me.entidades);
             console.log("Acabo de actualizar los datos de entidades desde BBDD...");
@@ -479,7 +479,7 @@ export default {
                   'grupoEntidad': me.grupoEntidad,
                   'posicionIBAN': me.posicionIBAN,
                   'iban': me.iban
-                }).then(function(response){
+                },me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();
@@ -511,7 +511,7 @@ export default {
                   'grupoEntidad': me.grupoEntidad,
                   'posicionIBAN': me.posicionIBAN,
                   'iban': me.iban
-                }).then(function(response){
+                },me.configuration).then(function(response){
                   me.close();
                   me.limpiar();
                   me.listar();
@@ -530,7 +530,7 @@ export default {
           this.close();
           let me = this;
                 this.cargando=1;
-                axios.delete('/api/entidad/'+id).then(function(response){
+                axios.delete('/api/entidad/'+id, me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();

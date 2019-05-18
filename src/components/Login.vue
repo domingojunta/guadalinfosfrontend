@@ -12,9 +12,14 @@
                     <v-text-field autofocus type="text" label="email" required
                     v-model="email">
                     </v-text-field>
-                    <v-text-field type="password" label="Contraseña" required
-                    v-model="password">
-                    </v-text-field>
+                    <v-text-field 
+                      :type="mostrar ? 'text' : 'password'" 
+                      v-model="password" 
+                      label="Contraseña"
+                      :append-icon="mostrar ? 'visibility' : 'visibility_off'"
+                      @click:append="mostrar = !mostrar"
+                    ></v-text-field>
+                    
                     <v-flex class="red--text" v-if="error">
                         <v-icon color="red">error</v-icon>
                         {{error}}
@@ -38,17 +43,30 @@ export default {
             password:'',
             headers: null,
             token:null,
-            error: null
+            error: null,
+            mostrar:0,
         }
     },
     methods: {
         acceder() {
             let me = this;
             me.error = null;
-            axios.post('/login',
-                {
+            //let headers ={'Content-type': 'application/json', 'Access-Control-Allow-Origin':'*'};
+            axios({
+                method: 'post',
+                url: '/login',
+                data: {
                     "nombreUsuario": me.email,
                     "password": me.password
+                },
+                headers: {
+                       'Content-Type': 'application/json',
+                       'Access-Control-Allow-Origin': '*',
+                       'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'
+                },
+                mode : 'no-cors',
+                withCredentials: true
+                    
                 })
                 .then(function(response) {
                     //console.log(response.status);
@@ -63,6 +81,7 @@ export default {
                 .catch(function(err) {
                         //console.log("Estoy dentro del catch...");
                         me.error ="Los datos introducidos no son correctos...";
+                        console.log(err);
                 })
                    
                     

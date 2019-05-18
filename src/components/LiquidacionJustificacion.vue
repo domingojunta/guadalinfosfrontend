@@ -501,7 +501,8 @@ export default {
                     
           axios('/reporte/certificadosEmpleoSubvenciones/'+idSolicitud, {
             method: 'GET',
-            responseType: 'blob'
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -616,7 +617,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar', me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -803,7 +804,7 @@ export default {
 
               
                   
-            }).then(function(response){
+            }, me.configuration).then(function(response){
               
              
               me.close();

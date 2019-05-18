@@ -6,7 +6,7 @@ import store from './store'
 import axios from 'axios'
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 axios.defaults.baseURL='http://localhost:8085'
 
 new Vue({

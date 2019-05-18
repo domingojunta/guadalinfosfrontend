@@ -275,7 +275,7 @@
             <td class="justify-center layout px-0">
               <v-icon class="rm-2 blue--text" @click="pdfItem(props.item)">edit</v-icon>
               <v-icon class="green--text" @click="imprimirPDF(props.item)">picture_as_pdf</v-icon>
-
+              <v-icon class="rm-5 blue--text" @click="imprimirDoc(props.item)">chrome_reader_mode</v-icon>
               
             </td>
             <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
@@ -436,6 +436,38 @@ export default {
     
     methods: {
 
+        pedirDocAlServidor(idSolicitud,yearConvocatoria,nombreEntidad){
+          let me = this;
+          this.cargando=1;
+          //let direccion = '/reporte/comunicacionEntrada/'+idSolicitud;
+          //console.log("Voy a hacer una petición get a:"+direccion);
+          
+          axios('/reporte/propuestaLiquidacionDoc/'+idSolicitud, {
+            method: 'GET',
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
+          }).then(function(response){
+            const file = new Blob(
+              [response.data],
+              {type: 'application/x-download'}
+            );
+            
+            const fileURL = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = fileURL;
+            let nombreFichero = 'Propuesta_Liquidacion_RAPI_'+yearConvocatoria+'_'+nombreEntidad+'.doc';
+            link.setAttribute('download',nombreFichero);
+            document.body.appendChild(link);
+            link.click();
+            //window.open(fileURL);
+            
+          }).catch(function(error){
+            
+            console.log("Error: "+error);
+          });
+
+          setTimeout(this.cambioCarga,1000);
+        },
         
         pedirPDFAlServidor(idSolicitud, yearConvocatoria, nombreEntidad){
           
@@ -446,7 +478,8 @@ export default {
           
           axios('/reporte/propuestaLiquidacion/'+idSolicitud, {
             method: 'GET',
-            responseType: 'blob'
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json','Authorization': 'Bearer '+ me.token },
           }).then(function(response){
             const file = new Blob(
               [response.data],
@@ -548,7 +581,7 @@ export default {
           let me = this;
           this.cargando=1;
 
-          axios.get('/api/solicitud_listar').then(function(response){
+          axios.get('/api/solicitud_listar',me.configuration).then(function(response){
             me.solicitudes = response.data;
             me.$store.dispatch('setSolicitudesAsync',me.solicitudes);
             
@@ -580,6 +613,18 @@ export default {
             this.asiginarValores(item);
             //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
             this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
+            //this.crearPDF();
+            this.limpiar();
+        },
+        imprimirDoc(item) {
+            if (this.numeroDiasCerrado==null) {
+              alert("Antes de imprimir debes de rellenar los campos");
+            } else {
+              
+            }
+            this.asiginarValores(item);
+            //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
+            this.pedirDocAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
             //this.crearPDF();
             this.limpiar();
         },
@@ -706,7 +751,7 @@ export default {
               'numeroDiasCerrado': me.numeroDiasCerrado
               
                   
-            }).then(function(response){
+            }, me.configuration).then(function(response){
               
              
               me.close();

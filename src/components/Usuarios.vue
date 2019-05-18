@@ -11,10 +11,10 @@
           label="Búsqueda" single-line hide-details>
         </v-text-field>
         <v-spacer></v-spacer>
-
-        <!-- Ventana Emergente -->
-
-        <v-dialog v-model="dialog" max-width="80%">
+ 
+        
+        <!-- Diálogo Crear -->
+        <v-dialog v-model="dialogCrear" max-width="80%">
           <template v-slot:activator="{ on }">
             <v-btn dark class="mb-2 blue" v-on="on" icon >
                 <v-icon>add</v-icon>
@@ -23,7 +23,90 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline blue--text">{{ formTitle }}</span>
+              <span class="headline blue--text">Crear Usuario</span>
+            </v-card-title>
+             
+
+            <v-card-text>
+              <v-container grid-list-md>
+                
+
+                <v-layout wrap>
+                  
+                  
+                  <v-flex xs12 sm12 md12>
+                    <v-text-field autofocus v-model="nombreUsuario" label="Nombre"></v-text-field>
+                  </v-flex>
+                  <v-flex xs6 sm6 md6>
+                    <v-text-field 
+                      :type="mostrar ? 'text' : 'password'" 
+                      v-model="password" 
+                      label="Contraseña"
+                      :append-icon="mostrar ? 'visibility' : 'visibility_off'"
+                      
+                      @click:append="mostrar = !mostrar"
+                    ></v-text-field>
+                  </v-flex>
+                  <v-flex xs6 sm6 md6>
+                    <v-text-field 
+                      :type="mostrar ? 'text' : 'password'" 
+                      v-model="password2" 
+                      label="Repite la Contraseña"
+                      :append-icon="mostrar ? 'visibility' : 'visibility_off'"
+                      @click:append="mostrar = !mostrar"
+                    ></v-text-field></v-flex>
+                  <v-flex xs6 sm6 md6>
+                    <v-select
+                        v-model="rol"
+                        :items="roles"
+                        label="Rol"
+                        single-line
+                    ></v-select>
+                    
+                  </v-flex>
+                  
+                  <v-flex xs6 sm6 md6>
+                    <v-select
+                        v-model="activo"
+                        :items= "estadosUsuario"
+                        label="Activo"
+                        single-line
+                    ></v-select>
+                    
+                  </v-flex>
+                  
+                  <v-flex xs12 sm12 md12 v-if="valida">
+                    <div class="red--text" v-for="item in validaMensaje">{{item}}</div>
+                  </v-flex>
+                  
+                </v-layout>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" flat @click="close">
+                <v-icon large>cancel</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-1" flat @click="crearItem">
+                <v-icon large>save</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        
+
+        <v-dialog v-model="dialogEditar" max-width="80%">
+          <template v-slot:activator="{ on }">
+            <v-btn dark class="mb-2 blue" v-on="on" icon >
+                <v-icon>add</v-icon>
+                     
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline blue--text">Editar Usuario</span>
             </v-card-title>
              
 
@@ -34,65 +117,11 @@
                 <v-layout wrap>
                   
                   <v-flex xs4 sm4 md4 v-if="editedIndex != -1">
-                    <v-text-field disabled v-model="idEntidad" label="Id"></v-text-field>
+                    <v-text-field disabled v-model="idUsuario" label="Id"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm12 md12>
-                    <v-text-field autofocus v-model="nombreEntidad" label="Nombre"></v-text-field>
-                  </v-flex>
-                  <v-flex xs6 sm6 md6>
-                    <v-text-field v-model="acreedorGIRO" label="GIRO"></v-text-field>
-                  </v-flex>
-                  <v-flex xs6 sm6 md6>
-                    <v-text-field v-model="cif" label="CIF"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field v-model="direccion" label="Dirección"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-text-field v-model="codigoPostal" label="Código Postal"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-text-field   v-model="municipio" label="Municipio"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-select
-                        v-model="provincia"
-                        :items="provincias"
-                        label="Provincia"
-                        single-line
-                    ></v-select>
-                    
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field v-model="emailAyuntamiento" label="Email Ayuntamiento"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field v-model="emailCentro" label="Email Centro"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-select
-                        v-model="tipoEntidad"
-                        :items="tipos"
-                        label="Tipo"
-                        single-line
-                    ></v-select>
-                    
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-select
-                        v-model="grupoEntidad"
-                        :items="grupos"
-                        label="Grupo"
-                        single-line
-                    ></v-select>
-                    
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-text-field v-model="posicionIBAN" label="Posición IBAN"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field v-model="iban" label="IBAN"></v-text-field>
-                  </v-flex>
+                    <v-text-field autofocus v-model="nombreUsuario" label="Nombre"></v-text-field>
+                  
                   <v-flex xs12 sm12 md12 v-if="valida">
                     <div class="red--text" v-for="item in validaMensaje">{{item}}</div>
                   </v-flex>
@@ -113,7 +142,8 @@
           </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialog2" max-width="80%">
+<!--        
+        <v-dialog v-model="dialogBorrar" max-width="80%">
           
           <v-card>
             <v-card-title>
@@ -192,6 +222,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+      
+       -->
       </v-toolbar>
 
       <v-layout v-if="cargando">
@@ -213,7 +245,7 @@
 
       <v-data-table 
           :headers="headers" 
-          :items="entidades" 
+          :items="usuarios" 
           class="elevation-1" 
           :search="palabraBusqueda"
           :rows-per-page-items="rowsPerPageItems"
@@ -223,21 +255,46 @@
         <template v-slot:items="props">
           
           <td class="justify-center layout px-0">
-            <v-icon small class="mr-2 blue--text" @click="editItem(props.item)">edit</v-icon>
-            <v-icon small class="red--text" @click="deleteItem(props.item)">delete</v-icon>
+            <v-icon  class="mr-2 blue--text" >edit</v-icon>
+            <v-icon  class="red--text" >delete</v-icon>
           </td>
-          <td class="text-xs-left">{{ props.item.nombreEntidad }}</td>
-          <td class="text-xs-center">{{ props.item.idEntidad }}</td>
+          <td class="text-xs-left">{{ props.item.nombreUsuario }}</td>
+          <td class="text-xs-center">{{ props.item.idUsuario }}</td>
           
-          <td class="text-xs-center">{{ props.item.cif }}</td>
-          <td class="text-xs-left text-capitalize">{{ props.item.tipoEntidad }}</td>
-          <td class="text-xs-center">{{ props.item.grupoEntidad }}</td>
-          <td class="text-xs-left">{{ props.item.municipio }}</td>
+          <td class="text-xs-center">{{ props.item.rol }}</td>
+          <td class="text-xs-center">
+            <v-icon 
+              v-if="props.item.activo" 
+              large color="green"
+              @click="desactivarUsuario(props.item)" >
+              toggle_on
+            </v-icon>
+            <v-icon v-else large color="red"
+            @click="activarUsuario(props.item)" >
+              toggle_off
+            </v-icon>
+          
+          </td>
+          
           
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Resetear</v-btn>
+          <td>
+              <v-alert
+                :value="true"
+                color="error"
+                icon="warning"
+                outline 
+              >
+                No se han podido cargar los datos desde el servidor
+              </v-alert>
+          </td>
+          <td>
+              <v-btn color="primary" @click="irInicio">Ir a inicio</v-btn>
+          </td>
+          
         </template>
+
       </v-data-table>
     </v-flex>
   </v-layout>
@@ -251,96 +308,74 @@ export default {
     data() {
         return {
             
+            idUsuario: null,
+            nombreUsuario: null,
+            password: null,
+            password2: null,
+            rawPassword: null,
+            rol: null,
+            roles: ['ADMINISTRADOR','USUARIO','LECTOR'],
+            activo: null,
+            usuarios: [],
+            usuario: null,
+            estadosUsuario: [true,false],
+            mostrar: 0,
             cargando: 0,
             valida: 0,
             validaMensaje: [],
-            provincias: null,
-            tipos: null,
-            grupos: null,
-            idEntidad: null,
-            nombreEntidad: '',
-            acreedorGIRO: '',
-            cif: '',
-            direccion:'',
-            codigoPostal:'',
-            municipio:'',
-            provincia:'Córdoba',
-            emailAyuntamiento:'',
-            emailCentro:'',
-            tipoEntidad:'',
-            grupoEntidad:'',
-            posicionIBAN:'',
-            iban:'',
-
-            entidades: null,
-            dialog: false,
-            dialog2: false,
+            
+            dialogCrear: false,
+            dialogEditar: false,
+            dialogBorrar: false,
             rowsPerPageItems: [5,10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}],
             pagination: {
               rowsPerPage: 10
             },
             headers: [
               { text: 'Opciones', value: 'opciones', sortable: false, class: 'primary--text' },
-              { text: 'Nombre', align: 'center', sortable: true, value: 'nombreEntidad', class: 'primary--text' },
-              { text: 'id', align: 'center', sortable: true, value: 'idEntidad', class: 'primary--text' },
-              
-              { text: 'CIF', align: 'center', sortable: true, value: 'cif', class: 'primary--text' },
-              { text: 'Tipo', align: 'center', sortable: true, value: 'tipoEntidad', class: 'primary--text' },
-              { text: 'Grupo', align: 'center', sortable: true, value: 'grupoEntidad', class: 'primary--text' },
-              { text: 'Municipio', align: 'center', sortable: false, value: 'municipio', class: 'primary--text' },
+              { text: 'Nombre', align: 'center', sortable: true, value: 'nombreUsuario', class: 'primary--text' },
+              { text: 'Id', align: 'center', sortable: true, value: 'idUsuario', class: 'primary--text' },
+              { text: 'Rol', align: 'center', sortable: true, value: 'rol', class: 'primary--text' },
+              { text: 'Activo', align: 'center', sortable: true, value: 'activo', class: 'primary--text' },
             ],
             palabraBusqueda:'',
-            editedIndex: -1,
             token: null,
             header: null,
             configuration: null,
+            validaMensaje: null,
+            valida: null,
             
         }
     },
-    computed: {
-        formTitle () {
-        return this.editedIndex === -1 ? 'Crear Entidad' : 'Editar Entidad'
-        },
-        logueado() {
-      return this.$store.getters.getUsuario;
-    },
-    esAdministrador() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'ADMINISTRADOR';
-    },
-    esUsuario() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'USUARIO';
-    },
-    esLector() {
-      return this.$store.getters.getUsuario && 
-              this.$store.state.usuario.rol == 'LECTOR';
-    }
-        
-    },
 
-    watch: {
-        dialog (val) {
-        val || this.close()
+    computed: {
+        
+        logueado() {
+          return this.$store.getters.getUsuario;
+        },
+        esAdministrador() {
+          return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'ADMINISTRADOR';
+         },
+        esUsuario() {
+          return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'USUARIO';
+        },
+        esLector() {
+          return this.$store.getters.getUsuario && 
+              this.$store.state.usuario.rol == 'LECTOR';
         }
-    },
+        
+      },
 
     
-
-    created () {
-        
-        this.entidades= this.$store.getters.getEntidades;
-        this.provincias= this.$store.getters.getProvincias;
-        this.grupos= this.$store.getters.getGrupos;
-        this.tipos= this.$store.getters.getTipos;
-        
-        
-    },
     mounted(){
-      this.token = this.$store.state.token;
+        this.token = this.$store.state.token;
         this.header = {"Authorization" : "Bearer "+this.token};
         this.configuration = {headers : this.header};
+        this.listar();
     },
+
     methods: {
 
         cambioCarga() {
@@ -350,47 +385,60 @@ export default {
         listar() {
           let me = this;
           this.cargando=1;
-          axios.get('/api/entidades_listar').then(function(response){
-            me.entidades = response.data;
-            me.$store.dispatch('setEntidadesAsync',me.entidades);
-            console.log("Acabo de actualizar los datos de entidades desde BBDD...");
+          axios.get('/api/usuarios',me.configuration).then(function(response){
+            me.usuarios = response.data;
           }).catch(function(error){
-            console.log("Trabajaré con las entidades harcodeadas por defecto...");
-           console.log("Error: "+error);
+            //alert("No se han podido descargar los datos del servidor.");
+            console.log("Error: "+ error);
           });
-          this.entidades= this.$store.getters.getEntidades;
+          
           setTimeout(this.cambioCarga,1000);
         },
+
+
         editItem (item) {
-            this.editedIndex=1;
-            this.dialog = true;
-            this.idEntidad=item.idEntidad;
-            this.nombreEntidad=item.nombreEntidad;
-            this.acreedorGIRO=item.acreedorGIRO;
-            this.cif=item.cif;
-            this.direccion=item.direccion;
-            this.codigoPostal=item.codigoPostal;
-            this.municipio=item.municipio;
-            this.provincia=item.provincia;
-            this.emailAyuntamiento=item.emailAyuntamiento;
-            this.emailCentro=item.emailCentro;
-            this.tipoEntidad=item.tipoEntidad;
-            this.grupoEntidad=item.grupoEntidad;
-            this.posicionIBAN=item.posicionIBAN;
-            this.iban=item.iban;
+            
+            this.dialogEditar = true;
+            
          
         },
         validar() {
           this.valida=0;
           this.validaMensaje=[];
-          if (this.nombreEntidad.length<3 || this.nombreEntidad.length>45) {
-            this.validaMensaje.push("El nombre debe tener mas de 3 caracteres y menos de 45");
+
+          if (this.nombreUsuario!=null) {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (pattern.test(this.nombreUsuario)) {
+              this.valida=0;
+            } else {
+              this.validaMensaje.push("El nombre introducido no es un email válido");
+              this.valida=1;
+            }
+          } else {
+              this.validaMensaje.push("El nombre introducido no es un email válido");
+              this.valida=1;
+          }
+
+           
+          if (this.password ==null || this.password =='') {
+            this.validaMensaje.push("Debe indicar una contraseña...");
             this.valida=1;
             
           }
 
-          if (this.cif.length<9 || this.cif.length>10) {
-            this.validaMensaje.push("El cif debe tener entre 9 y 10 caracteres");
+          if (this.password!=this.password2) {
+            this.validaMensaje.push("Las contraseñas deben coincidir...");
+            this.valida=1;
+          }
+
+          if (this.rol==null || this.rol=="") {
+            this.validaMensaje.push("Debes indicar un rol para el usuario");
+            this.valida=1;
+            
+          }
+
+          if (!(this.activo=='activo'|| this.activo=='inactivo')) {
+            this.validaMensaje.push("El valor sólo puede ser activo/inactivo");
             this.valida=1;
             
           }
@@ -398,130 +446,111 @@ export default {
           
         },
 
+        crearItem(){
+          this.validar();
+          this.crearUsuarioEnServidor();
+          
+        },
+
+        crearUsuarioEnServidor() {
+          let me = this;
+          this.cargando=1;
+          if (me.activo=='activo') {
+            me.activo=1;
+          } else {
+            me.activo=0;
+          }
+          axios.post('/api/usuario',{
+              'nombreUsuario': me.nombreUsuario,
+              'password': me.password,
+              'rol': me.rol,
+              'activo': me.activo
+                  
+                },me.configuration)
+                .then(function(response){
+                  me.close();
+                  me.listar();
+                }).catch(function(error){
+                  me.close();
+                  me.listar();
+                  
+                });
+                
+                setTimeout(this.cambioCarga,1000);
+                
+       
+        },
+
+        activarUsuario(item) {
+          
+          this.idUsuario=item.idUsuario;
+          this.activo = 1;
+          this.activarDesactivarUsuario();
+        },
+
+        desactivarUsuario(item) {
+          
+          this.idUsuario=item.idUsuario;
+          this.activo = 0;
+          this.activarDesactivarUsuario();
+        },
+        
+        activarDesactivarUsuario(){
+          let me = this;
+          axios.put('/api/activoInactivoUsuario',{
+              'idUsuario': me.idUsuario,
+              'activo': me.activo
+                  
+                },me.configuration)
+                .then(function(response){
+                  me.close();
+                  me.listar();
+                }).catch(function(error){
+                  me.close();
+                  me.listar();
+                  
+                });
+                
+                setTimeout(this.cambioCarga,1000);
+
+        
+        },
+          
+    
+        
         deleteItem (item) {
             
-            this.dialog2 = true;
-            this.idEntidad=item.idEntidad;
-            this.nombreEntidad=item.nombreEntidad;
-            this.acreedorGIRO=item.acreedorGIRO;
-            this.cif=item.cif;
-            this.direccion=item.direccion;
-            this.codigoPostal=item.codigoPostal;
-            this.municipio=item.municipio;
-            this.provincia=item.provincia;
-            this.emailAyuntamiento=item.emailAyuntamiento;
-            this.emailCentro=item.emailCentro;
-            this.tipoEntidad=item.tipoEntidad;
-            this.grupoEntidad=item.grupoEntidad;
-            this.posicionIBAN=item.posicionIBAN;
-            this.iban=item.iban;
+            this.dialogBorrar = true;
+            
         },
 
         close () {
-            this.dialog = false;
-            this.dialog2=false;
+            this.dialogCrear = false;
+            this.dialogEditar=false;
+            this.dialogBorrar=false;
             this.limpiar();
             
             
         },
 
         limpiar() {
-            this.idEntidad= null;
-            this.nombreEntidad= '';
-            this.acreedorGIRO= '';
-            this.cif= '';
-            this.direccion='';
-            this.codigoPostal='';
-            this.municipio='';
-            this.provincia='Córdoba';
-            this.emailAyuntamiento='';
-            this.emailCentro='';
-            this.tipoEntidad='';
-            this.grupoEntidad='';
-            this.posicionIBAN='';
-            this.iban='';
-            this.editedIndex= -1;
-            this.palabraBusqueda='';
-        },
-
-        guardar () {
+            this.idUsuario=null;
+            this.nombreUsuario=null;
+            this.password=null;
+            this.password2=null;
+            this.rol=null;
+            this.activo=null;
+            this.usuario=null;
             
-            if (this.validar()) {
-              
-              return;
-            }
-
-            if (this.editedIndex > -1) {
-                // Código para editar
-                let me = this;
-                this.cargando=1;
-                axios.put('/api/entidad',{
-                  'idEntidad': me.idEntidad,
-                  'nombreEntidad': me.nombreEntidad,
-                  'acreedorGIRO': me.acreedorGIRO,
-                  'cif': me.cif,
-                  'direccion': me.direccion,
-                  'codigoPostal': me.codigoPostal,
-                  'municipio': me.municipio,
-                  'provincia': me.provincia,
-                  'emailAyuntamiento': me.emailAyuntamiento,
-                  'emailCentro': me.emailCentro,
-                  'tipoEntidad': me.tipoEntidad,
-                  'grupoEntidad': me.grupoEntidad,
-                  'posicionIBAN': me.posicionIBAN,
-                  'iban': me.iban
-                }).then(function(response){
-                  me.close();
-                  
-                  me.listar();
-                  
-                }).catch(function(error){
-                  
-                  me.close();
-                  
-                  console.log(error);
-                });
-                setTimeout(this.cambioCarga,1000);
-
-            } else {
-
-                //Código para crear
-                let me = this;
-                this.cargando=1;
-                axios.post('/api/entidad',{
-                  'nombreEntidad': me.nombreEntidad,
-                  'acreedorGIRO': me.acreedorGIRO,
-                  'cif': me.cif,
-                  'direccion': me.direccion,
-                  'codigoPostal': me.codigoPostal,
-                  'municipio': me.municipio,
-                  'provincia': me.provincia,
-                  'emailAyuntamiento': me.emailAyuntamiento,
-                  'emailCentro': me.emailCentro,
-                  'tipoEntidad': me.tipoEntidad,
-                  'grupoEntidad': me.grupoEntidad,
-                  'posicionIBAN': me.posicionIBAN,
-                  'iban': me.iban
-                }).then(function(response){
-                  me.close();
-                  me.limpiar();
-                  me.listar();
-                }).catch(function(error){
-                  
-                  me.close();
-                  me.limpiar();
-                  console.log(error);
-                });
-                setTimeout(this.cambioCarga,1000);
-            }
-            this.close()
         },
+
+        
 
         borrar(id) {
           this.close();
           let me = this;
                 this.cargando=1;
-                axios.delete('/api/entidad/'+id).then(function(response){
+                axios.delete('/usuario/'+id,me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();
@@ -535,10 +564,15 @@ export default {
                 setTimeout(this.cambioCarga,1000);
           
           
+        },
+
+        irInicio() {
+          this.$router.push({name: 'home'})
         }
   
 
-    }
+    },
+     
 }
 </script>
 

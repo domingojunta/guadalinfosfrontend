@@ -250,7 +250,7 @@ export default {
         listar() {
           let me = this;
           this.cargando=1;
-          axios.get('/api/ordenes_listar').then(function(response){
+          axios.get('/api/ordenes_listar', me.configuration).then(function(response){
             me.ordenes = response.data;
             me.$store.dispatch('setOrdenesAsync',me.ordenes);
             console.log("Acabo de actualizar los datos de órdenes desde BBDD...");
@@ -328,7 +328,7 @@ export default {
                   'nombreOrden': me.nombreOrden,
                   'aliasOrden': me.aliasOrden,
                   
-                }).then(function(response){
+                }, me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();
@@ -350,7 +350,7 @@ export default {
                   'nombreOrden': me.nombreOrden,
                   'aliasOrden': me.aliasOrden,
                   
-                }).then(function(response){
+                }, me.configuration).then(function(response){
                   me.close();
                   me.limpiar();
                   me.listar();
@@ -369,7 +369,7 @@ export default {
           this.close();
           let me = this;
                 this.cargando=1;
-                axios.delete('/api/orden/'+id).then(function(response){
+                axios.delete('/api/orden/'+id, me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();

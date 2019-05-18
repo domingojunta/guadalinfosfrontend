@@ -680,7 +680,7 @@ export default {
         listar() {
           let me = this;
           this.cargando=1;
-          axios.get('/api/convocatoria_listar').then(function(response){
+          axios.get('/api/convocatoria_listar', me.configuration).then(function(response){
             me.convocatorias = response.data;
             me.$store.dispatch('setConvocatoriasAsync',me.convocatorias);
             console.log("Acabo de actualizar los datos de convocatorias desde BBDD...");
@@ -847,7 +847,7 @@ export default {
               'aplicacionPresupuestariaFutura': me.aplicacionPresupuestariaFutura,
               
                   
-                }).then(function(response){
+                }, me.configuration).then(function(response){
                   me.close();
                   me.listar();
                   
@@ -901,7 +901,7 @@ export default {
               'aplicacionPresupuestariaFutura': me.aplicacionPresupuestariaFutura,
               
                   
-                }).then(function(response){
+                }, me.configuration).then(function(response){
                   me.close();
                   me.limpiar();
                   me.listar();
@@ -919,7 +919,7 @@ export default {
           this.close();
           let me = this;
                 this.cargando=1;
-                axios.delete('/api/convocatoria/'+id).then(function(response){
+                axios.delete('/api/convocatoria/'+id, me.configuration).then(function(response){
                   me.close();
                   
                   me.listar();
