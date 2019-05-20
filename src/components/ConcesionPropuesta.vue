@@ -449,6 +449,7 @@ export default {
 
         imprimirPDF(item) {
             
+            this.asiginarValores(item);
             if (this.fechaEntrada==null || this.fechaEntrada=='') {
               alert("Antes de imprimir debes de rellenar los campos");
             } else {

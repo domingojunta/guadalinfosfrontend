@@ -95,7 +95,7 @@
           </v-card>
         </v-dialog>
 
-        
+  <!--      
 
         <v-dialog v-model="dialogEditar" max-width="80%">
           <template v-slot:activator="{ on }">
@@ -142,7 +142,7 @@
           </v-card>
         </v-dialog>
 
-<!--        
+        
         <v-dialog v-model="dialogBorrar" max-width="80%">
           
           <v-card>
