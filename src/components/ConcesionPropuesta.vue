@@ -454,7 +454,7 @@ export default {
               alert("Antes de imprimir debes de rellenar los campos");
             } else {
             
-            this.asiginarValores(item);
+            
             //console.log("El id de la solicitud pedida es:"+item.idSolicitud);
             this.pedirPDFAlServidor(item.idSolicitud, item.yearConvocatoria,item.nombreEntidad);
             //this.crearPDF();
